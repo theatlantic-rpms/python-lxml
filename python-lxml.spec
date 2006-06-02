@@ -4,8 +4,8 @@
 %define srcname lxml
 
 Name:           python-%{srcname}
-Version:        0.9.1
-Release:        3%{?dist}
+Version:        1.0
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -56,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{python_sitearch}/lxml/*.pyo
 
 %changelog
+* Fri Jun 02 2006 Shahms E. King <shahms@shahms.com> 1.0-1
+- Update to new upstream 1.0 release
+
 * Wed Apr 26 2006 Shahms E. King <shahms@shahms.com> 0.9.1-3
 - Add python-setuptools to BuildRequires
 - Use dist tag
