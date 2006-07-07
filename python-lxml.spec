@@ -4,7 +4,7 @@
 %define srcname lxml
 
 Name:           python-%{srcname}
-Version:        1.0.1
+Version:        1.0.2
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -56,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{python_sitearch}/lxml/*.pyo
 
 %changelog
+* Fri Jul 07 2006 Shahms E. King <shahms@shahms.com> 1.0.2-1
+- Update to new upstream release
+
 * Mon Jun 26 2006 Shahms E. King <shahms@shahms.com> 1.0.1-1
 - Update to new upstream release
 
