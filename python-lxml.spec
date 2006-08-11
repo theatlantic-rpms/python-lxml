@@ -5,7 +5,7 @@
 
 Name:           python-%{srcname}
 Version:        1.0.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -53,9 +53,12 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitearch}/lxml/*.so
 %{python_sitearch}/lxml/*.py
 %{python_sitearch}/lxml/*.pyc
-%ghost %{python_sitearch}/lxml/*.pyo
+%{python_sitearch}/lxml/*.pyo
 
 %changelog
+* Fri Aug 11 2006 Shahms E. King <shahms@shahms.com> 1.0.2-2
+- Include, don't ghost .pyo files per new guidelines
+
 * Fri Jul 07 2006 Shahms E. King <shahms@shahms.com> 1.0.2-1
 - Update to new upstream release
 
