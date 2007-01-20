@@ -4,8 +4,8 @@
 %define srcname lxml
 
 Name:           python-%{srcname}
-Version:        1.0.3
-Release:        3%{?dist}
+Version:        1.1.2
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -31,6 +31,7 @@ and handles memory management automatically, unlike the default bindings.
 %prep
 %setup -q -n %{srcname}-%{version}
 
+chmod a-x doc/rest2html.py
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
@@ -56,6 +57,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitearch}/lxml/*.pyo
 
 %changelog
+* Fri Jan 19 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.1.2-1
+- Update to 1.1.2
+
 * Thu Dec 14 2006 Jason L Tibbitts III <tibbs@math.uh.edu> - 1.0.3-3
 - Rebuild for new Python
 
