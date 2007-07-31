@@ -1,10 +1,9 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-%{!?python_version: %define python_version %(%{__python} -c "import sys ; print sys.version[:3]")}
 
 %define srcname lxml
 
 Name:           python-%{srcname}
-Version:        1.1.2
+Version:        1.3.3
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -18,7 +17,6 @@ BuildRequires:  python-devel libxslt-devel python-setuptools
 # Upstream now includes the generated .c file and the Pyrex shipped
 # with FC (0.9.3.1) is broken for gcc >= 4.0
 #BuildRequires: Pyrex >= 0.9.4
-Requires:   python-abi = %{python_version}
 
 %description
 lxml provides a Python binding to the libxslt and libxml2 libraries.  It
@@ -49,14 +47,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc README.txt LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt doc/
-%{python_sitearch}/lxml-%{version}-py%{python_version}.egg-info/
-%dir %{python_sitearch}/lxml
-%{python_sitearch}/lxml/*.so
-%{python_sitearch}/lxml/*.py
-%{python_sitearch}/lxml/*.pyc
-%{python_sitearch}/lxml/*.pyo
+%{python_sitearch}/*
 
 %changelog
+* Mon Jul 30 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.3-1
+- Update to 1.3.3
+
 * Fri Jan 19 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.1.2-1
 - Update to 1.1.2
 
