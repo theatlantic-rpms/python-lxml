@@ -4,7 +4,7 @@
 
 Name:           python-%{srcname}
 Version:        1.3.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -13,7 +13,10 @@ URL:            http://codespeak.net/lxml/
 Source0:        http://codespeak.net/lxml/%{srcname}-%{version}.tgz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  python-devel libxslt-devel python-setuptools
+BuildRequires:  python-devel
+BuildRequires:  libxslt-devel
+BuildRequires:  python-setuptools-devel
+
 # Upstream now includes the generated .c file and the Pyrex shipped
 # with FC (0.9.3.1) is broken for gcc >= 4.0
 #BuildRequires: Pyrex >= 0.9.4
@@ -50,6 +53,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitearch}/*
 
 %changelog
+* Tue Aug 28 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.3-2
+- BR python-setuptools-devel
+
 * Mon Jul 30 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.3-1
 - Update to 1.3.3
 
