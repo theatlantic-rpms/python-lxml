@@ -1,51 +1,42 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-%define srcname lxml
-
-Name:           python-%{srcname}
-Version:        1.3.3
-Release:        3%{?dist}
+Name:           python-lxml
+Version:        1.3.4
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
 License:        BSD
 URL:            http://codespeak.net/lxml/
-Source0:        http://codespeak.net/lxml/%{srcname}-%{version}.tgz
+Source0:        http://codespeak.net/lxml/lxml-%{version}.tgz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  python-devel
 BuildRequires:  libxslt-devel
 BuildRequires:  python-setuptools-devel
 
-# Upstream now includes the generated .c file and the Pyrex shipped
-# with FC (0.9.3.1) is broken for gcc >= 4.0
-#BuildRequires: Pyrex >= 0.9.4
-
 %description
-lxml provides a Python binding to the libxslt and libxml2 libraries.  It
-follows the ElementTree API as much as possible in order to provide a more
-Pythonic interface to libxml2 and libxslt than the default bindings.  In
-particular, lxml deals with Python Unicode strings rather than encoded UTF-8
-and handles memory management automatically, unlike the default bindings.
-
+lxml provides a Python binding to the libxslt and libxml2 libraries.
+It follows the ElementTree API as much as possible in order to provide
+a more Pythonic interface to libxml2 and libxslt than the default
+bindings.  In particular, lxml deals with Python Unicode strings
+rather than encoded UTF-8 and handles memory management automatically,
+unlike the default bindings.
 
 %prep
-%setup -q -n %{srcname}-%{version}
+%setup -q -n lxml-%{version}
 
 chmod a-x doc/rest2html.py
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
-
+CFLAGS="%{optflags}" %{__python} setup.py build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --single-version-externally-managed
-
+rm -rf %{buildroot}
+%{__python} setup.py install -O1 --skip-build --root %{buildroot} --single-version-externally-managed
 
 %clean
-rm -rf $RPM_BUILD_ROOT
-
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
@@ -53,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitearch}/*
 
 %changelog
+* Thu Aug 30 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.4-1
+- Update to 1.3.4.
+
 * Wed Aug 29 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 1.3.3-3
 - Rebuild for selinux ppc32 issue.
 
