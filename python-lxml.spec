@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        1.3.5
+Version:        1.3.6
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -33,7 +33,7 @@ CFLAGS="%{optflags}" %{__python} setup.py build
 
 %install
 rm -rf %{buildroot}
-%{__python} setup.py install -O1 --skip-build --root %{buildroot} --single-version-externally-managed
+%{__python} setup.py install --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -44,6 +44,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Mon Nov  4 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.6-1
+- Update to 1.3.6.
+
 * Mon Oct 22 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.5-1
 - Update to 1.3.5.
 
