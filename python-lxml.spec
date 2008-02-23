@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.0.1
+Version:        2.0.2
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -11,9 +11,13 @@ URL:            http://codespeak.net/lxml/
 Source0:        http://codespeak.net/lxml/lxml-%{version}.tgz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  python-devel
 BuildRequires:  libxslt-devel
-BuildRequires:  python-setuptools-devel
+
+%if 0%{?fedora} >= 8
+BuildRequires: python-setuptools-devel
+%else
+BuildRequires: python-setuptools
+%endif
 
 %description
 lxml provides a Python binding to the libxslt and libxml2 libraries.
@@ -29,11 +33,11 @@ unlike the default bindings.
 chmod a-x doc/rest2html.py
 
 %build
-CFLAGS="%{optflags}" %{__python} setup.py build
+CFLAGS="%{optflags}" %{__python} -c 'import setuptools; execfile("setup.py")' build
 
 %install
 rm -rf %{buildroot}
-%{__python} setup.py install --skip-build --root %{buildroot}
+%{__python} -c 'import setuptools; execfile("setup.py")' install --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -44,6 +48,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Sat Feb 23 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.0.2-1
+- Update to 2.0.2
+
 * Tue Feb 19 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.0.1-1
 - Update to 2.0.1
 
