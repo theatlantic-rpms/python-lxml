@@ -1,14 +1,15 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.0.6
+Version:        2.0.7
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
 License:        BSD
 URL:            http://codespeak.net/lxml/
-Source0:        http://codespeak.net/lxml/lxml-%{version}.tgz
+Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz
+#Source0:        http://codespeak.net/lxml/lxml-%{version}.tgz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libxslt-devel
@@ -48,6 +49,10 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Fri Jun 20 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.0.7-1
+- Update to 2.0.7
+- Update download URL
+
 * Sat May 31 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.0.6-1
 - Update to 2.0.6
 
