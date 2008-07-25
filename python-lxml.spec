@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.0.7
+Version:        2.1.1
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -49,6 +49,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Fri Jul 25 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.1.1-1
+- Update to 2.1.1
+
 * Fri Jun 20 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.0.7-1
 - Update to 2.0.7
 - Update download URL
