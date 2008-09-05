@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.1.1
+Version:        2.1.2
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -49,6 +49,21 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Fri Sep  5 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.1.2-1
+- 2.1.2 (2008-09-05)
+- Features added
+- 
+-    * lxml.etree now tries to find the absolute path name of files when
+-      parsing from a file-like object. This helps custom resolvers when
+-      resolving relative URLs, as lixbml2 can prepend them with the path of
+-      the source document.
+- 
+- Bugs fixed
+- 
+-    * Memory problem when passing documents between threads.
+-    * Target parser did not honour the recover option and raised an exception
+-      instead of calling .close() on the target.
+
 * Fri Jul 25 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.1.1-1
 - Update to 2.1.1
 
