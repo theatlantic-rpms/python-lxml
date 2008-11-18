@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.1.2
+Version:        2.1.3
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -49,6 +49,25 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Mon Nov 17 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.1.3-1
+- 2.1.3 (2008-11-17)
+- Bugs fixed
+- 
+-    * Ref-count leaks when lxml enters a try-except statement while an
+-      outside exception lives in sys.exc_*(). This was due to a problem
+-      in Cython, not lxml itself.
+-    * Parser Unicode decoding errors could get swallowed by other
+-      exceptions.
+-    * Name/import errors in some Python modules.
+-    * Internal DTD subsets that did not specify a system or public ID
+-      were not serialised and did not appear in the docinfo property
+-      of ElementTrees.
+-    * Fix a pre-Py3k warning when parsing from a gzip file in Py2.6.
+-    * Test suite fixes for libxml2 2.7.
+-    * Resolver.resolve_string() did not work for non-ASCII byte strings.
+-    * Resolver.resolve_file() was broken.
+-    * Overriding the parser encoding didn't work for many encodings.
+
 * Fri Sep  5 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.1.2-1
 - 2.1.2 (2008-09-05)
 - Features added
