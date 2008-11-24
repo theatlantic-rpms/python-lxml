@@ -1,14 +1,15 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+%define alpha 1
 
 Name:           python-lxml
-Version:        2.1.3
-Release:        1%{?dist}
+Version:        2.2
+Release:        0.1.alpha%{alpha}%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
 License:        BSD
 URL:            http://codespeak.net/lxml/
-Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz
+Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}alpha%{alpha}.tar.gz
 #Source0:        http://codespeak.net/lxml/lxml-%{version}.tgz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -29,7 +30,7 @@ rather than encoded UTF-8 and handles memory management automatically,
 unlike the default bindings.
 
 %prep
-%setup -q -n lxml-%{version}
+%setup -q -n lxml-%{version}alpha%{alpha}
 
 chmod a-x doc/rest2html.py
 
@@ -49,6 +50,25 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Mon Nov 24 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.1.alpha1
+- 2.2alpha1 (2008-11-23)
+- Features added
+- 
+-    * Support for XSLT result tree fragments in XPath/XSLT extension
+-      functions.
+-    * QName objects have new properties namespace and localname.
+-    * New options for exclusive C14N and C14N without comments.
+-    * Instantiating a custom Element classes creates a new Element.
+- 
+- Bugs fixed
+- 
+-    * XSLT didn't inherit the parse options of the input document.
+-    * 0-bytes could slip through the API when used inside of Unicode
+-      strings.
+-    * With lxml.html.clean.autolink, links with balanced parenthesis, that
+-      end in a parenthesis, will be linked in their entirety (typical with
+-      Wikipedia links).
+
 * Mon Nov 17 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.1.3-1
 - 2.1.3 (2008-11-17)
 - Bugs fixed
