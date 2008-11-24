@@ -3,7 +3,7 @@
 
 Name:           python-lxml
 Version:        2.2
-Release:        0.1.alpha%{alpha}%{?dist}
+Release:        0.2.alpha%{alpha}%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -50,6 +50,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Mon Nov 24 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.2.alpha1%{?dist}
+- Don't forget to upload the sources!
+
 * Mon Nov 24 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.1.alpha1
 - 2.2alpha1 (2008-11-23)
 - Features added
