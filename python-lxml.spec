@@ -1,15 +1,15 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-%define alpha 1
+%define beta 1
 
 Name:           python-lxml
 Version:        2.2
-Release:        0.3.alpha%{alpha}%{?dist}
+Release:        0.4.beta%{beta}%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
 License:        BSD
 URL:            http://codespeak.net/lxml/
-Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}alpha%{alpha}.tar.gz
+Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}beta%{beta}.tar.gz
 #Source0:        http://codespeak.net/lxml/lxml-%{version}.tgz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -30,7 +30,7 @@ rather than encoded UTF-8 and handles memory management automatically,
 unlike the default bindings.
 
 %prep
-%setup -q -n lxml-%{version}alpha%{alpha}
+%setup -q -n lxml-%{version}beta%{beta}
 
 chmod a-x doc/rest2html.py
 
@@ -50,6 +50,22 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Fri Dec 12 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.4.beta1
+- 2.2beta1 (2008-12-12)
+- Features added
+- 
+-    * Allow lxml.html.diff.htmldiff to accept Element objects,
+-      not just HTML strings.
+- 
+- Bugs fixed
+- 
+-    * Crash when using an XPath evaluator in multiple threads.
+-    * Fixed missing whitespace before Link:... in lxml.html.diff.
+- 
+- Other changes
+- 
+-    * Export lxml.html.parse.
+
 * Fri Nov 28 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.3.alpha1
 - Rebuild for Python 2.6
 
