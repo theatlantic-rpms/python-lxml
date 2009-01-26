@@ -1,9 +1,9 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-%define beta 1
+%define beta 2
 
 Name:           python-lxml
 Version:        2.2
-Release:        0.4.beta%{beta}%{?dist}
+Release:        0.5.beta%{beta}%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -50,6 +50,17 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Sun Jan 25 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.5.beta2
+- 2.2beta2 (2009-01-25)
+- Bugs fixed
+- 
+-    * Potential memory leak on exception handling. This was due to a
+-      problem in Cython, not lxml itself.
+-    * iter_links (and related link-rewriting functions) in lxml.html would
+-      interpret CSS like url("link") incorrectly (treating the quotation
+-      marks as part of the link).
+-    * Failing import on systems that have an io module.
+
 * Fri Dec 12 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.4.beta1
 - 2.2beta1 (2008-12-12)
 - Features added
