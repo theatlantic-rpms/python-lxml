@@ -1,9 +1,9 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-%define beta 2
+%define beta 3
 
 Name:           python-lxml
 Version:        2.2
-Release:        0.5.beta%{beta}%{?dist}
+Release:        0.6.beta%{beta}%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -50,6 +50,29 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Tue Feb 17 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.6.beta3
+- 2.2beta3 (2009-02-17)
+- Features added
+- 
+-    * XSLT.strparam() class method to wrap quoted string parameters that
+-     require escaping.
+- 
+- Bugs fixed
+- 
+-    * Memory leak in XPath evaluators.
+-    * Crash when parsing indented XML in one thread and merging it with
+-      other documents parsed in another thread.
+-    * Setting the base attribute in lxml.objectify from a unicode string
+-      failed.
+-    * Fixes following changes in Python 3.0.1.
+-    * Minor fixes for Python 3.
+- 
+- Other changes
+- 
+-    * The global error log (which is copied into the exception log) is now
+-      local to a thread, which fixes some race conditions.
+-    * More robust error handling on serialisation.
+
 * Sun Jan 25 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.5.beta2
 - 2.2beta2 (2009-01-25)
 - Bugs fixed
