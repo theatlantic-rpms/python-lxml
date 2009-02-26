@@ -3,7 +3,7 @@
 
 Name:           python-lxml
 Version:        2.2
-Release:        0.6.beta%{beta}%{?dist}
+Release:        0.7.beta%{beta}%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -50,6 +50,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Thu Feb 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2-0.7.beta3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Tue Feb 17 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.6.beta3
 - 2.2beta3 (2009-02-17)
 - Features added
