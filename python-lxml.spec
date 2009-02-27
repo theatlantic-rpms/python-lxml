@@ -1,9 +1,9 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-%define beta 3
+%define beta 4
 
 Name:           python-lxml
 Version:        2.2
-Release:        0.7.beta%{beta}%{?dist}
+Release:        0.8.beta%{beta}%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -50,6 +50,34 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Fri Feb 27 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.8.beta4
+- 2.2beta4 (2009-02-27)
+- Features added
+- 
+-    * Support strings and instantiable Element classes as child arguments
+-      to the constructor of custom Element classes.
+-    * GZip compression support for serialisation to files and file-like
+-      objects.
+- 
+- Bugs fixed
+- 
+-    * Deep-copying an ElementTree copied neither its sibling PIs and
+-      comments nor its internal/external DTD subsets.
+-    * Soupparser failed on broken attributes without values.
+-    * Crash in XSLT when overwriting an already defined attribute using
+-      xsl:attribute.
+-    * Crash bug in exception handling code under Python 3. This was due to
+-      a problem in Cython, not lxml itself.
+-    * lxml.html.FormElement._name() failed for non top-level forms.
+-    * TAG special attribute in constructor of custom Element classes was
+-      evaluated incorrectly.
+- 
+- Other changes
+- 
+-    * Official support for Python 3.0.1.
+-    * Element.findtext() now returns an empty string instead of None for
+-      Elements without text content.
+
 * Thu Feb 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2-0.7.beta3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
