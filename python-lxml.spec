@@ -1,15 +1,14 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-%define beta 4
 
 Name:           python-lxml
 Version:        2.2
-Release:        0.8.beta%{beta}%{?dist}
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
 License:        BSD
 URL:            http://codespeak.net/lxml/
-Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}beta%{beta}.tar.gz
+Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz
 #Source0:        http://codespeak.net/lxml/lxml-%{version}.tgz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -30,7 +29,7 @@ rather than encoded UTF-8 and handles memory management automatically,
 unlike the default bindings.
 
 %prep
-%setup -q -n lxml-%{version}beta%{beta}
+%setup -q -n lxml-%{version}
 
 chmod a-x doc/rest2html.py
 
@@ -50,6 +49,19 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Tue Mar 24 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-1
+- 2.2 (2009-03-21)
+- Features added
+- 
+-    * Support for standalone flag in XML declaration through
+-      tree.docinfo.standalone and by passing standalone=True/False on
+-      serialisation.
+- 
+- Bugs fixed
+- 
+-    * Crash when parsing an XML Schema with external imports from a
+-      filename.
+
 * Fri Feb 27 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.8.beta4
 - 2.2beta4 (2009-02-27)
 - Features added
