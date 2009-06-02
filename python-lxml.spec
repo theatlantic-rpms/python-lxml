@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.2
+Version:        2.2.1
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -49,6 +49,22 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Tue Jun  2 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.1-1
+- 2.2.1 (2009-06-02)
+- Features added
+- 
+-    * Injecting default attributes into a document during XML Schema
+-      validation (also at parse time).
+-    * Pass huge_tree parser option to disable parser security restrictions
+-      imposed by libxml2 2.7.
+- 
+- Bugs fixed
+- 
+-    * The script for statically building libxml2 and libxslt didn't work
+-      in Py3.
+-    * XMLSchema() also passes invalid schema documents on to libxml2 for
+-      parsing (which could lead to a crash before release 2.6.24).
+
 * Tue Mar 24 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-1
 - 2.2 (2009-03-21)
 - Features added
