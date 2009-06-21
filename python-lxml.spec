@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.2.1
+Version:        2.2.2
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -49,6 +49,27 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Sun Jun 21 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.2-1
+- 2.2.2 (2009-06-21)
+- Features added
+- 
+-    * New helper functions strip_attributes(), strip_elements(),
+-      strip_tags() in lxml.etree to remove attributes/subtrees/tags
+-      from a subtree.
+- 
+- Bugs fixed
+- 
+-    * Namespace cleanup on subtree insertions could result in missing
+-      namespace declarations (and potentially crashes) if the element
+-      defining a namespace was deleted and the namespace was not used
+-      by the top element of the inserted subtree but only in deeper
+-      subtrees.
+-    * Raising an exception from a parser target callback didn't always
+-      terminate the parser.
+-    * Only {true, false, 1, 0} are accepted as the lexical representation
+-      for BoolElement ({True, False, T, F, t, f} not any more), restoring
+-      lxml <= 2.0 behaviour.
+
 * Tue Jun  2 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.1-1
 - 2.2.1 (2009-06-02)
 - Features added
