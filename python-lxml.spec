@@ -1,8 +1,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.2.2
-Release:        2%{?dist}
+Version:        2.2.3
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -49,6 +49,40 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
+* Fri Oct 30 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.3-1
+- 2.2.3 (2009-10-30)
+- Bugs fixed
+- 
+-    * The resolve_entities option did not work in the incremental feed
+-      parser.
+-    * Looking up and deleting attributes without a namespace could hit a
+-      namespaced attribute of the same name instead.
+-    * Late errors during calls to SubElement() (e.g. attribute related
+-      ones) could leave a partially initialised element in the tree.
+-    * Modifying trees that contain parsed entity references could result
+-      in an infinite loop.
+-    * ObjectifiedElement.__setattr__ created an empty-string child element
+-      when the attribute value was rejected as a non-unicode/non-ascii
+-      string
+-    * Syntax errors in lxml.cssselect could result in misleading error
+-      messages.
+-    * Invalid syntax in CSS expressions could lead to an infinite loop in
+-      the parser of lxml.cssselect.
+-    * CSS special character escapes were not properly handled in
+-      lxml.cssselect.
+-    * CSS Unicode escapes were not properly decoded in lxml.cssselect.
+-    * Select options in HTML forms that had no explicit value attribute
+-      were not handled correctly. The HTML standard dictates that their
+-      value is defined by their text content. This is now supported by
+-      lxml.html.
+-    * XPath raised a TypeError when finding CDATA sections. This is now
+-      fully supported.
+-    * Calling help(lxml.objectify) didn't work at the prompt.
+-    * The ElementMaker in lxml.objectify no longer defines the default
+-      namespaces when annotation is disabled.
+-    * Feed parser failed to honour the 'recover' option on parse errors.
+-    * Diverting the error logging to Python's logging system was broken.
+
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
