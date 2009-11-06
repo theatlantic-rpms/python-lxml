@@ -8,7 +8,7 @@
 
 Name:           python-lxml
 Version:        2.2.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -20,16 +20,13 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libxslt-devel
 
-%if 0%{?fedora} >= 8
-BuildRequires: python-setuptools-devel
-%else
-BuildRequires: python-setuptools
-%endif
+BuildRequires:  python-devel
+BuildRequires:  python-setuptools-devel
 
 %if %{with_python3}
-BuildRequires: python3-devel
-BuildRequires: python3-setuptools
-%global py3dir ../python3-lxml-%{version}
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
+%global py3dir  ../python3-lxml-%{version}
 %endif
 
 %description
@@ -99,6 +96,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu Nov  5 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.3-3
+- F-13's python build chain must be a little different...
+
 * Thu Nov  5 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.3-2
 - Add option to build a Python 3 subpackage, original patch by David Malcolm
 
