@@ -1,4 +1,4 @@
-%global with_python3 0
+%global with_python3 1
 
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
@@ -7,15 +7,15 @@
 %endif
 
 Name:           python-lxml
-Version:        2.2.3
-Release:        3%{?dist}
+Version:        2.2.4
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
 License:        BSD
 URL:            http://codespeak.net/lxml/
 Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz
-#Source0:        http://codespeak.net/lxml/lxml-%{version}.tgz
+Source1:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz.asc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libxslt-devel
@@ -25,7 +25,7 @@ BuildRequires:  python-setuptools-devel
 
 %if %{with_python3}
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
+#BuildRequires:  python3-setuptools
 %global py3dir  ../python3-lxml-%{version}
 %endif
 
@@ -96,6 +96,10 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu Jan 14 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.4-1
+- Update to 2.2.4
+- Enable Python 3 subpackage
+
 * Thu Nov  5 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.3-3
 - F-13's python build chain must be a little different...
 
