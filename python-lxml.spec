@@ -1,14 +1,12 @@
+%if 0%{?fedora} > 12 || 0%{?rhel} > 5
 %global with_python3 1
-
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
-%if %{with_python3}
-%{!?python3_sitearch: %define python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 %endif
+
+%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
 Version:        2.2.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -21,12 +19,13 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libxslt-devel
 
 BuildRequires:  python-devel
-BuildRequires:  python-setuptools-devel
+BuildRequires:  python-setuptools
 
-%if %{with_python3}
+%if 0%{?with_python3}
 BuildRequires:  python3-devel
-#BuildRequires:  python3-setuptools
-%global py3dir  ../python3-lxml-%{version}
+BuildRequires:  python3-setuptools
+# needed for 2to3
+BuildRequires:  python-tools
 %endif
 
 %description
@@ -37,7 +36,15 @@ bindings.  In particular, lxml deals with Python Unicode strings
 rather than encoded UTF-8 and handles memory management automatically,
 unlike the default bindings.
 
-%if %{with_python3}
+%package docs
+Summary:        Documentation for %{name}
+Group:          Documentation
+BuildArch:      noarch
+%description docs
+This package provides the documentation for %{name}, e.g. the API as html.
+
+
+%if 0%{?with_python3}
 %package -n python3-lxml
 Summary:        ElementTree-like Python 3 bindings for libxml2 and libxslt
 Group:          Development/Libraries
@@ -55,16 +62,35 @@ unlike the default bindings.
 %setup -q -n lxml-%{version}
 
 chmod a-x doc/rest2html.py
+%{__sed} -i 's/\r//' doc/s5/ui/default/print.css \
+    doc/s5/ep2008/atom.rng \
+    doc/s5/ui/default/iepngfix.htc
 
-%if %{with_python3}
+# FIXME: this is fixed in upstreams issue:
+# http://bugs.python.org/issue7313
+# Don't know when this is in a released python version.
+# Always try to delete that part,
+# when a new python version is released!!!
+#
+# src/lxml/tests/test_errors.py has a 3-byte Byte Order Marker, which seems to
+# break both 2to3 and python3-2to3;
+# However, it doesn't contain any non-ASCII characters, so for now, simply
+# strip it from the top of the file:
+pushd src/lxml/tests
+    tail --bytes=+4 test_errors.py > test_errors.py.new
+    mv test_errors.py.new test_errors.py
+popd
+
+%if 0%{?with_python3}
+rm -rf %{py3dir}
 cp -r . %{py3dir}
-chmod a-x %{py3dir}/doc/rest2html.py
+2to3 --write --nobackup %{py3dir}
 %endif
 
 %build
 CFLAGS="%{optflags}" %{__python} -c 'import setuptools; execfile("setup.py")' build
 
-%if %{with_python3}
+%if 0%{?with_python3}
 pushd %{py3dir}
 CFLAGS="%{optflags}" %{__python3} setup.py build
 popd
@@ -74,7 +100,7 @@ popd
 rm -rf %{buildroot}
 %{__python} -c 'import setuptools; execfile("setup.py")' install --skip-build --root %{buildroot}
 
-%if %{with_python3}
+%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root %{buildroot}
 popd
@@ -85,17 +111,32 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README.txt LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt doc/
-%{python_sitearch}/*
+%doc README.txt LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt
+%{python_sitearch}/lxml
+%{python_sitearch}/lxml-*.egg-info
 
-%if %{with_python3}
+%files docs
+%defattr(-,root,root,-)
+%doc doc/*
+
+%if 0%{?with_python3}
 %files -n python3-lxml
 %defattr(-,root,root,-)
-%doc README.txt LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt doc/
-%{python3_sitearch}/*
+%doc README.txt LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt
+%{python3_sitearch}/lxml-*.egg-info
+%{python3_sitearch}/lxml
 %endif
 
 %changelog
+* Mon Feb 15 2010 Thomas Spura <tomspur@fedoraproject.org> - 2.2.4-2
+- update to current python3 guidelines
+- be more explicit in %%files
+- use %%global and not %%define
+- create docs subpackage
+- add stripping 3-byte Byte Order Marker from src/lxml/tests/test_errors.py
+  to get 2to3 to work (dmalcolm)
+- fixes FTBFS (#564674)
+
 * Thu Jan 14 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.4-1
 - Update to 2.2.4
 - Enable Python 3 subpackage
