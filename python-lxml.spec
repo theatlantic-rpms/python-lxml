@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.2.4
-Release:        2%{?dist}
+Version:        2.2.5
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -128,6 +128,30 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Mar  1 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.5-1
+- 2.2.5 (2010-02-28)
+- 
+- Features added
+- 
+-    * Support for running XSLT extension elements on the input root node
+-      (e.g. in a template matching on "/").
+- 
+- Bugs fixed
+- 
+-    * Crash in XPath evaluation when reading smart strings from a document
+-      other than the original context document.
+-    * Support recent versions of html5lib by not requiring its XHTMLParser
+-      in htmlparser.py anymore.
+-    * Manually instantiating the custom element classes in lxml.objectify
+-      could crash.
+-    * Invalid XML text characters were not rejected by the API when they
+-      appeared in unicode strings directly after non-ASCII characters.
+-    * lxml.html.open_http_urllib() did not work in Python 3.
+-    * The functions strip_tags() and strip_elements() in lxml.etree did
+-      not remove all occurrences of a tag in all cases.
+-    * Crash in XSLT extension elements when the XSLT context node is not
+-      an element.
+
 * Mon Feb 15 2010 Thomas Spura <tomspur@fedoraproject.org> - 2.2.4-2
 - update to current python3 guidelines
 - be more explicit in %%files
