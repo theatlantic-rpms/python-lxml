@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.2.5
+Version:        2.2.6
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -128,6 +128,13 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Tue Mar  2 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.6-1
+- 2.2.6 (2010-03-02)
+- 
+- Bugs fixed
+- 
+-    * Fixed several Python 3 regressions by building with Cython 0.11.3.
+
 * Mon Mar  1 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.5-1
 - 2.2.5 (2010-02-28)
 - 
