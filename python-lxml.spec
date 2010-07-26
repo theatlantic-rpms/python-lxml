@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        2.2.6
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -14,6 +14,11 @@ License:        BSD
 URL:            http://codespeak.net/lxml/
 Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz
 Source1:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz.asc
+
+# Workaround for bug 600036: 2to3 chokes on certain lines
+# Reported upstream against 2to3 as listed in that bug
+Patch0:         python-lxml-2.2.6-fix-2to3.patch
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libxslt-devel
@@ -60,6 +65,8 @@ unlike the default bindings.
 
 %prep
 %setup -q -n lxml-%{version}
+
+%patch0 -p1
 
 chmod a-x doc/rest2html.py
 %{__sed} -i 's/\r//' doc/s5/ui/default/print.css \
@@ -128,6 +135,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Jul 26 2010 David Malcolm <dmalcolm@redhat.com> - 2.2.6-3
+- workaround for 2to3 issue (patch 0; bug 600036)
+
 * Thu Jul 22 2010 David Malcolm <dmalcolm@redhat.com> - 2.2.6-2
 - Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
 
