@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        2.2.6
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -135,6 +135,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Jul 26 2010 David Malcolm <dmalcolm@redhat.com> - 2.2.6-4
+- actually add the patch this time
+
 * Mon Jul 26 2010 David Malcolm <dmalcolm@redhat.com> - 2.2.6-3
 - workaround for 2to3 issue (patch 0; bug 600036)
 
