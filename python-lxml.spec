@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.2.6
-Release:        4%{?dist}
+Version:        2.2.7
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -135,6 +135,12 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Jul 26 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.7-1
+- 2.2.7 (2010-07-24)
+- Bugs fixed
+- 
+-     * Crash in XSLT when generating text-only result documents with a stylesheet created in a different thread.
+
 * Mon Jul 26 2010 David Malcolm <dmalcolm@redhat.com> - 2.2.6-4
 - actually add the patch this time
 
