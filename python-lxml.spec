@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        2.2.7
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -115,11 +115,11 @@ popd
 
 %install
 rm -rf %{buildroot}
-%{__python} setup.py install --skip-build --root %{buildroot}
+%{__python} setup.py install --skip-build --no-compile --root %{buildroot}
 
 %if 0%{?with_python3}
 pushd %{py3dir}
-%{__python3} setup.py install --skip-build --root %{buildroot}
+%{__python3} setup.py install --skip-build --no-compile --root %{buildroot}
 popd
 %endif
 
@@ -145,6 +145,10 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Tue Aug 24 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.7-3
+- Don't byte-compile files during install because setup.py doesn't
+  properly byte compile for Python version 3.2
+
 * Sun Aug 22 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.7-2
 - Rebuild for Python 3.2
 
