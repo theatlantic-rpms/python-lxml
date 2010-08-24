@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        2.2.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -25,6 +25,7 @@ BuildRequires:  libxslt-devel
 
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
+BuildRequires:  Cython >= 0.12
 
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
@@ -68,6 +69,11 @@ unlike the default bindings.
 
 %patch0 -p1
 
+# remove the C extension so that it will be rebuild using the latest Cython
+rm -f src/lxml/lxml.etree.c
+rm -f src/lxml/lxml.etree_api.h
+rm -f src/lxml/lxml.objectify.c
+
 chmod a-x doc/rest2html.py
 %{__sed} -i 's/\r//' doc/s5/ui/default/print.css \
     doc/s5/ep2008/atom.rng \
@@ -95,9 +101,13 @@ cp -r . %{py3dir}
 %endif
 
 %build
-CFLAGS="%{optflags}" %{__python} -c 'import setuptools; execfile("setup.py")' build
+CFLAGS="%{optflags}" %{__python} setup.py build
 
 %if 0%{?with_python3}
+cp src/lxml/lxml.etree.c %{py3dir}/src/lxml
+cp src/lxml/lxml.etree_api.h %{py3dir}/src/lxml
+cp src/lxml/lxml.objectify.c %{py3dir}/src/lxml
+
 pushd %{py3dir}
 CFLAGS="%{optflags}" %{__python3} setup.py build
 popd
@@ -105,7 +115,7 @@ popd
 
 %install
 rm -rf %{buildroot}
-%{__python} -c 'import setuptools; execfile("setup.py")' install --skip-build --root %{buildroot}
+%{__python} setup.py install --skip-build --root %{buildroot}
 
 %if 0%{?with_python3}
 pushd %{py3dir}
@@ -135,6 +145,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sun Aug 22 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.7-2
+- Rebuild for Python 3.2
+
 * Mon Jul 26 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.7-1
 - 2.2.7 (2010-07-24)
 - Bugs fixed
