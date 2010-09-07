@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.2.7
-Release:        3%{?dist}
+Version:        2.2.8
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -145,6 +145,14 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Sep  6 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.8-1
+- 2.2.8 (2010-09-02)
+- Bugs fixed
+-
+-     * Crash in newer libxml2 versions when moving elements between
+-       documents that had attributes on replaced XInclude nodes.
+-     * Import fix for urljoin in Python 3.1+.
+
 * Tue Aug 24 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.7-3
 - Don't byte-compile files during install because setup.py doesn't
   properly byte compile for Python version 3.2
