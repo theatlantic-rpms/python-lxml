@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        2.2.8
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -145,6 +145,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Wed Dec 29 2010  David Malcolm <dmalcolm@redhat.com> - 2.2.8-3
+- rebuild for newer python3
+
 * Fri Nov  5 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.8-2
 - Rebuild for newer libxml2
 
