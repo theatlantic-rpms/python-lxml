@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.2.8
-Release:        4%{?dist}
+Version:        2.3
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -14,10 +14,6 @@ License:        BSD
 URL:            http://codespeak.net/lxml/
 Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz
 Source1:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz.asc
-
-# Workaround for bug 600036: 2to3 chokes on certain lines
-# Reported upstream against 2to3 as listed in that bug
-Patch0:         python-lxml-2.2.6-fix-2to3.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -30,8 +26,6 @@ BuildRequires:  Cython >= 0.12
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-# needed for 2to3
-BuildRequires:  python-tools
 %endif
 
 %description
@@ -67,9 +61,7 @@ unlike the default bindings.
 %prep
 %setup -q -n lxml-%{version}
 
-%patch0 -p1
-
-# remove the C extension so that it will be rebuild using the latest Cython
+# remove the C extension so that it will be rebuilt using the latest Cython
 rm -f src/lxml/lxml.etree.c
 rm -f src/lxml/lxml.etree_api.h
 rm -f src/lxml/lxml.objectify.c
@@ -79,25 +71,9 @@ chmod a-x doc/rest2html.py
     doc/s5/ep2008/atom.rng \
     doc/s5/ui/default/iepngfix.htc
 
-# FIXME: this is fixed in upstreams issue:
-# http://bugs.python.org/issue7313
-# Don't know when this is in a released python version.
-# Always try to delete that part,
-# when a new python version is released!!!
-#
-# src/lxml/tests/test_errors.py has a 3-byte Byte Order Marker, which seems to
-# break both 2to3 and python3-2to3;
-# However, it doesn't contain any non-ASCII characters, so for now, simply
-# strip it from the top of the file:
-pushd src/lxml/tests
-    tail --bytes=+4 test_errors.py > test_errors.py.new
-    mv test_errors.py.new test_errors.py
-popd
-
 %if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -r . %{py3dir}
-2to3 --write --nobackup %{py3dir}
 %endif
 
 %build
@@ -145,6 +121,206 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Tue Apr 19 2011 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.3-1
+- 2.3 (2011-02-06)
+- ================
+-
+- Features added
+- --------------
+-
+- * When looking for children, ``lxml.objectify`` takes '{}tag' as
+-   meaning an empty namespace, as opposed to the parent namespace.
+-
+- Bugs fixed
+- ----------
+-
+- * When finished reading from a file-like object, the parser
+-   immediately calls its ``.close()`` method.
+-
+- * When finished parsing, ``iterparse()`` immediately closes the input
+-   file.
+-
+- * Work-around for libxml2 bug that can leave the HTML parser in a
+-   non-functional state after parsing a severly broken document (fixed
+-   in libxml2 2.7.8).
+-
+- * ``marque`` tag in HTML cleanup code is correctly named ``marquee``.
+-
+- Other changes
+- --------------
+-
+- * Some public functions in the Cython-level C-API have more explicit
+-   return types.
+-
+- 2.3beta1 (2010-09-06)
+- =====================
+-
+- Features added
+- --------------
+-
+- Bugs fixed
+- ----------
+-
+- * Crash in newer libxml2 versions when moving elements between
+-   documents that had attributes on replaced XInclude nodes.
+-
+- * ``XMLID()`` function was missing the optional ``parser`` and
+-   ``base_url`` parameters.
+-
+- * Searching for wildcard tags in ``iterparse()`` was broken in Py3.
+-
+- * ``lxml.html.open_in_browser()`` didn't work in Python 3 due to the
+-   use of os.tempnam.  It now takes an optional 'encoding' parameter.
+-
+- Other changes
+- --------------
+-
+- 2.3alpha2 (2010-07-24)
+- ======================
+-
+- Features added
+- --------------
+-
+- Bugs fixed
+- ----------
+-
+- * Crash in XSLT when generating text-only result documents with a
+-   stylesheet created in a different thread.
+-
+- Other changes
+- --------------
+-
+- * ``repr()`` of Element objects shows the hex ID with leading 0x
+-   (following ElementTree 1.3).
+-
+- 2.3alpha1 (2010-06-19)
+- ======================
+-
+- Features added
+- --------------
+-
+- * Keyword argument ``namespaces`` in ``lxml.cssselect.CSSSelector()``
+-   to pass a prefix-to-namespace mapping for the selector.
+-
+- * New function ``lxml.etree.register_namespace(prefix, uri)`` that
+-   globally registers a namespace prefix for a namespace that newly
+-   created Elements in that namespace will use automatically.  Follows
+-   ElementTree 1.3.
+-
+- * Support 'unicode' string name as encoding parameter in
+-   ``tostring()``, following ElementTree 1.3.
+-
+- * Support 'c14n' serialisation method in ``ElementTree.write()`` and
+-   ``tostring()``, following ElementTree 1.3.
+-
+- * The ElementPath expression syntax (``el.find*()``) was extended to
+-   match the upcoming ElementTree 1.3 that will ship in the standard
+-   library of Python 3.2/2.7.  This includes extended support for
+-   predicates as well as namespace prefixes (as known from XPath).
+-
+- * During regular XPath evaluation, various ESXLT functions are
+-   available within their namespace when using libxslt 1.1.26 or later.
+-
+- * Support passing a readily configured logger instance into
+-   ``PyErrorLog``, instead of a logger name.
+-
+- * On serialisation, the new ``doctype`` parameter can be used to
+-   override the DOCTYPE (internal subset) of the document.
+-
+- * New parameter ``output_parent`` to ``XSLTExtension.apply_templates()``
+-   to append the resulting content directly to an output element.
+-
+- * ``XSLTExtension.process_children()`` to process the content of the
+-   XSLT extension element itself.
+-
+- * ISO-Schematron support based on the de-facto Schematron reference
+-   'skeleton implementation'.
+-
+- * XSLT objects now take XPath object as ``__call__`` stylesheet
+-   parameters.
+-
+- * Enable path caching in ElementPath (``el.find*()``) to avoid parsing
+-   overhead.
+-
+- * Setting the value of a namespaced attribute always uses a prefixed
+-   namespace instead of the default namespace even if both declare the
+-   same namespace URI.  This avoids serialisation problems when an
+-   attribute from a default namespace is set on an element from a
+-   different namespace.
+-
+- * XSLT extension elements: support for XSLT context nodes other than
+-   elements: document root, comments, processing instructions.
+-
+- * Support for strings (in addition to Elements) in node-sets returned
+-   by extension functions.
+-
+- * Forms that lack an ``action`` attribute default to the base URL of
+-   the document on submit.
+-
+- * XPath attribute result strings have an ``attrname`` property.
+-
+- * Namespace URIs get validated against RFC 3986 at the API level
+-   (required by the XML namespace specification).
+-
+- * Target parsers show their target object in the ``.target`` property
+-   (compatible with ElementTree).
+-
+- Bugs fixed
+- ----------
+-
+- * API is hardened against invalid proxy instances to prevent crashes
+-   due to incorrectly instantiated Element instances.
+-
+- * Prevent crash when instantiating ``CommentBase`` and friends.
+-
+- * Export ElementTree compatible XML parser class as
+-   ``XMLTreeBuilder``, as it is called in ET 1.2.
+-
+- * ObjectifiedDataElements in lxml.objectify were not hashable.  They
+-   now use the hash value of the underlying Python value (string,
+-   number, etc.) to which they compare equal.
+-
+- * Parsing broken fragments in lxml.html could fail if the fragment
+-   contained an orphaned closing '</div>' tag.
+-
+- * Using XSLT extension elements around the root of the output document
+-   crashed.
+-
+- * ``lxml.cssselect`` did not distinguish between ``x[attr="val"]`` and
+-   ``x [attr="val"]`` (with a space).  The latter now matches the
+-   attribute independent of the element.
+-
+- * Rewriting multiple links inside of HTML text content could end up
+-   replacing unrelated content as replacements could impact the
+-   reported position of subsequent matches.  Modifications are now
+-   simplified by letting the ``iterlinks()`` generator in ``lxml.html``
+-   return links in reversed order if they appear inside the same text
+-   node.  Thus, replacements and link-internal modifications no longer
+-   change the position of links reported afterwards.
+-
+- * The ``.value`` attribute of ``textarea`` elements in lxml.html did
+-   not represent the complete raw value (including child tags etc.). It
+-   now serialises the complete content on read and replaces the
+-   complete content by a string on write.
+-
+- * Target parser didn't call ``.close()`` on the target object if
+-   parsing failed.  Now it is guaranteed that ``.close()`` will be
+-   called after parsing, regardless of the outcome.
+-
+- Other changes
+- -------------
+-
+- * Official support for Python 3.1.2 and later.
+-
+- * Static MS Windows builds can now download their dependencies
+-   themselves.
+-
+- * ``Element.attrib`` no longer uses a cyclic reference back to its
+-   Element object.  It therefore no longer requires the garbage
+-   collector to clean up.
+-
+- * Static builds include libiconv, in addition to libxml2 and libxslt.
+
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.8-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
@@ -172,7 +348,7 @@ rm -rf %{buildroot}
 * Mon Jul 26 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.7-1
 - 2.2.7 (2010-07-24)
 - Bugs fixed
-- 
+-
 -     * Crash in XSLT when generating text-only result documents with a stylesheet created in a different thread.
 
 * Mon Jul 26 2010 David Malcolm <dmalcolm@redhat.com> - 2.2.6-4
@@ -186,21 +362,21 @@ rm -rf %{buildroot}
 
 * Tue Mar  2 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.6-1
 - 2.2.6 (2010-03-02)
-- 
+-
 - Bugs fixed
-- 
+-
 -    * Fixed several Python 3 regressions by building with Cython 0.11.3.
 
 * Mon Mar  1 2010 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.5-1
 - 2.2.5 (2010-02-28)
-- 
+-
 - Features added
-- 
+-
 -    * Support for running XSLT extension elements on the input root node
 -      (e.g. in a template matching on "/").
-- 
+-
 - Bugs fixed
-- 
+-
 -    * Crash in XPath evaluation when reading smart strings from a document
 -      other than the original context document.
 -    * Support recent versions of html5lib by not requiring its XHTMLParser
@@ -237,7 +413,7 @@ rm -rf %{buildroot}
 * Fri Oct 30 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.3-1
 - 2.2.3 (2009-10-30)
 - Bugs fixed
-- 
+-
 -    * The resolve_entities option did not work in the incremental feed
 -      parser.
 -    * Looking up and deleting attributes without a namespace could hit a
@@ -274,13 +450,13 @@ rm -rf %{buildroot}
 * Sun Jun 21 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.2-1
 - 2.2.2 (2009-06-21)
 - Features added
-- 
+-
 -    * New helper functions strip_attributes(), strip_elements(),
 -      strip_tags() in lxml.etree to remove attributes/subtrees/tags
 -      from a subtree.
-- 
+-
 - Bugs fixed
-- 
+-
 -    * Namespace cleanup on subtree insertions could result in missing
 -      namespace declarations (and potentially crashes) if the element
 -      defining a namespace was deleted and the namespace was not used
@@ -295,14 +471,14 @@ rm -rf %{buildroot}
 * Tue Jun  2 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2.1-1
 - 2.2.1 (2009-06-02)
 - Features added
-- 
+-
 -    * Injecting default attributes into a document during XML Schema
 -      validation (also at parse time).
 -    * Pass huge_tree parser option to disable parser security restrictions
 -      imposed by libxml2 2.7.
-- 
+-
 - Bugs fixed
-- 
+-
 -    * The script for statically building libxml2 and libxslt didn't work
 -      in Py3.
 -    * XMLSchema() also passes invalid schema documents on to libxml2 for
@@ -311,27 +487,27 @@ rm -rf %{buildroot}
 * Tue Mar 24 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-1
 - 2.2 (2009-03-21)
 - Features added
-- 
+-
 -    * Support for standalone flag in XML declaration through
 -      tree.docinfo.standalone and by passing standalone=True/False on
 -      serialisation.
-- 
+-
 - Bugs fixed
-- 
+-
 -    * Crash when parsing an XML Schema with external imports from a
 -      filename.
 
 * Fri Feb 27 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.8.beta4
 - 2.2beta4 (2009-02-27)
 - Features added
-- 
+-
 -    * Support strings and instantiable Element classes as child arguments
 -      to the constructor of custom Element classes.
 -    * GZip compression support for serialisation to files and file-like
 -      objects.
-- 
+-
 - Bugs fixed
-- 
+-
 -    * Deep-copying an ElementTree copied neither its sibling PIs and
 -      comments nor its internal/external DTD subsets.
 -    * Soupparser failed on broken attributes without values.
@@ -342,9 +518,9 @@ rm -rf %{buildroot}
 -    * lxml.html.FormElement._name() failed for non top-level forms.
 -    * TAG special attribute in constructor of custom Element classes was
 -      evaluated incorrectly.
-- 
+-
 - Other changes
-- 
+-
 -    * Official support for Python 3.0.1.
 -    * Element.findtext() now returns an empty string instead of None for
 -      Elements without text content.
@@ -355,12 +531,12 @@ rm -rf %{buildroot}
 * Tue Feb 17 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.6.beta3
 - 2.2beta3 (2009-02-17)
 - Features added
-- 
+-
 -    * XSLT.strparam() class method to wrap quoted string parameters that
 -     require escaping.
-- 
+-
 - Bugs fixed
-- 
+-
 -    * Memory leak in XPath evaluators.
 -    * Crash when parsing indented XML in one thread and merging it with
 -      other documents parsed in another thread.
@@ -368,9 +544,9 @@ rm -rf %{buildroot}
 -      failed.
 -    * Fixes following changes in Python 3.0.1.
 -    * Minor fixes for Python 3.
-- 
+-
 - Other changes
-- 
+-
 -    * The global error log (which is copied into the exception log) is now
 -      local to a thread, which fixes some race conditions.
 -    * More robust error handling on serialisation.
@@ -378,7 +554,7 @@ rm -rf %{buildroot}
 * Sun Jan 25 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.5.beta2
 - 2.2beta2 (2009-01-25)
 - Bugs fixed
-- 
+-
 -    * Potential memory leak on exception handling. This was due to a
 -      problem in Cython, not lxml itself.
 -    * iter_links (and related link-rewriting functions) in lxml.html would
@@ -389,17 +565,17 @@ rm -rf %{buildroot}
 * Fri Dec 12 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.4.beta1
 - 2.2beta1 (2008-12-12)
 - Features added
-- 
+-
 -    * Allow lxml.html.diff.htmldiff to accept Element objects,
 -      not just HTML strings.
-- 
+-
 - Bugs fixed
-- 
+-
 -    * Crash when using an XPath evaluator in multiple threads.
 -    * Fixed missing whitespace before Link:... in lxml.html.diff.
-- 
+-
 - Other changes
-- 
+-
 -    * Export lxml.html.parse.
 
 * Fri Nov 28 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.3.alpha1
@@ -411,15 +587,15 @@ rm -rf %{buildroot}
 * Mon Nov 24 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.2-0.1.alpha1
 - 2.2alpha1 (2008-11-23)
 - Features added
-- 
+-
 -    * Support for XSLT result tree fragments in XPath/XSLT extension
 -      functions.
 -    * QName objects have new properties namespace and localname.
 -    * New options for exclusive C14N and C14N without comments.
 -    * Instantiating a custom Element classes creates a new Element.
-- 
+-
 - Bugs fixed
-- 
+-
 -    * XSLT didn't inherit the parse options of the input document.
 -    * 0-bytes could slip through the API when used inside of Unicode
 -      strings.
@@ -430,7 +606,7 @@ rm -rf %{buildroot}
 * Mon Nov 17 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.1.3-1
 - 2.1.3 (2008-11-17)
 - Bugs fixed
-- 
+-
 -    * Ref-count leaks when lxml enters a try-except statement while an
 -      outside exception lives in sys.exc_*(). This was due to a problem
 -      in Cython, not lxml itself.
@@ -449,14 +625,14 @@ rm -rf %{buildroot}
 * Fri Sep  5 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.1.2-1
 - 2.1.2 (2008-09-05)
 - Features added
-- 
+-
 -    * lxml.etree now tries to find the absolute path name of files when
 -      parsing from a file-like object. This helps custom resolvers when
 -      resolving relative URLs, as lixbml2 can prepend them with the path of
 -      the source document.
-- 
+-
 - Bugs fixed
-- 
+-
 -    * Memory problem when passing documents between threads.
 -    * Target parser did not honour the recover option and raised an exception
 -      instead of calling .close() on the target.
