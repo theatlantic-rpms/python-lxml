@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.3
+Version:        2.3.1
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -121,6 +121,68 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sun Sep 25 2011 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.3.1-1
+- Features added
+- --------------
+-
+- * New option kill_tags in lxml.html.clean to remove specific
+-   tags and their content (i.e. their whole subtree).
+-
+- * pi.get() and pi.attrib on processing instructions to parse
+-   pseudo-attributes from the text content of processing instructions.
+-
+- * lxml.get_include() returns a list of include paths that can be
+-   used to compile external C code against lxml.etree.  This is
+-   specifically required for statically linked lxml builds when code
+-   needs to compile against the exact same header file versions as lxml
+-   itself.
+-
+- * Resolver.resolve_file() takes an additional option
+-   close_file that configures if the file(-like) object will be
+-   closed after reading or not.  By default, the file will be closed,
+-   as the user is not expected to keep a reference to it.
+-
+- Bugs fixed
+- ----------
+-
+- * HTML cleaning didn't remove 'data:' links.
+-
+- * The html5lib parser integration now uses the 'official'
+-   implementation in html5lib itself, which makes it work with newer
+-   releases of the library.
+-
+- * In lxml.sax, endElementNS() could incorrectly reject a plain
+-   tag name when the corresponding start event inferred the same plain
+-   tag name to be in the default namespace.
+-
+- * When an open file-like object is passed into parse() or
+-   iterparse(), the parser will no longer close it after use.  This
+-   reverts a change in lxml 2.3 where all files would be closed.  It is
+-   the users responsibility to properly close the file(-like) object,
+-   also in error cases.
+-
+- * Assertion error in lxml.html.cleaner when discarding top-level elements.
+-
+- * In lxml.cssselect, use the xpath 'A//B' (short for
+-   'A/descendant-or-self::node()/B') instead of 'A/descendant::B' for the
+-   css descendant selector ('A B'). This makes a few edge cases to be
+-   consistent with the selector behavior in WebKit and Firefox, and makes
+-   more css expressions valid location paths (for use in xsl:template
+-   match).
+-
+- * In lxml.html, non-selected <option> tags no longer show up in the
+-   collected form values.
+-
+- * Adding/removing <option> values to/from a multiple select form
+-   field properly selects them and unselects them.
+-
+- Other changes
+- --------------
+-
+- * Static builds can specify the download directory with the
+-   --download-dir option.
+
+
 * Tue Apr 19 2011 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.3-1
 - 2.3 (2011-02-06)
 - ================
