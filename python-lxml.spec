@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.3.1
+Version:        2.3.2
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -121,6 +121,32 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Nov 14 2011 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.3.2-1
+- 2.3.2 (2011-11-11)
+- Features added
+-
+-   * lxml.objectify.deannotate() has a new boolean option
+-     cleanup_namespaces to remove the objectify namespace declarations
+-     (and generally clean up the namespace declarations) after removing
+-     the type annotations.
+-   * lxml.objectify gained its own SubElement() function as a copy of
+-     etree.SubElement to avoid an otherwise redundant import of
+-     lxml.etree on the user side.
+-
+- Bugs fixed
+-
+-    * Fixed the "descendant" bug in cssselect a second time (after a first
+-      fix in lxml 2.3.1). The previous change resulted in a serious
+-      performance regression for the XPath based evaluation of the
+-      translated expression. Note that this breaks the usage of some
+-      of the generated XPath expressions as XSLT location paths that
+-      previously worked in 2.3.1.
+-    * Fixed parsing of some selectors in cssselect. Whitespace after
+-      combinators ">", "+" and "~" is now correctly ignored. Previously
+-      it was parsed as a descendant combinator. For example, "div> .foo"
+-      was parsed the same as "div>* .foo" instead of "div>.foo". Patch by
+-      Simon Sapin.
+
 * Sun Sep 25 2011 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.3.1-1
 - Features added
 - --------------
