@@ -104,7 +104,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README.txt LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt
+%doc LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt
 %{python_sitearch}/lxml
 %{python_sitearch}/lxml-*.egg-info
 
