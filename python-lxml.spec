@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.3.2
+Version:        2.3.3
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -121,6 +121,24 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu Jan  5 2012 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.3.3-1
+- 2.3.3 (2012-01-04)
+- Features added
+-
+-  * lxml.html.tostring() gained new serialisation options with_tail and
+-    doctype.
+-
+- Bugs fixed
+-
+-  * Fixed a crash when using iterparse() for HTML parsing and requesting
+-    start events.
+-  * Fixed parsing of more selectors in cssselect. Whitespace before pseudo-
+-    elements and pseudo-classes is significant as it is a descendant
+-    combinator. "E :pseudo" should parse the same as "E *:pseudo", not
+-    "E:pseudo". Patch by Simon Sapin.
+-  * lxml.html.diff no longer raises an exception when hitting 'img' tags
+-    without 'src' attribute.
+
 * Mon Nov 14 2011 Jeffrey C. Ollie <jeff@ocjtech.us> - 2.3.2-1
 - 2.3.2 (2011-11-11)
 - Features added
