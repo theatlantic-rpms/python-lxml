@@ -115,7 +115,7 @@ rm -rf %{buildroot}
 %if 0%{?with_python3}
 %files -n python3-lxml
 %defattr(-,root,root,-)
-%doc README.txt LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt
+%doc LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt
 %{python3_sitearch}/lxml-*.egg-info
 %{python3_sitearch}/lxml
 %endif
