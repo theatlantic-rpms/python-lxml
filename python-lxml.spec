@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        2.3.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -121,6 +121,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sat Aug 04 2012 David Malcolm <dmalcolm@redhat.com> - 2.3.3-4
+- rebuild for https://fedoraproject.org/wiki/Features/Python_3.3
+
 * Fri Aug  3 2012 David Malcolm <dmalcolm@redhat.com> - 2.3.3-3
 - remove rhel logic from with_python3 conditional
 
