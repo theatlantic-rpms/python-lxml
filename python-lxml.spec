@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.3.3
-Release:        4%{?dist}
+Version:        2.3.5
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -121,6 +121,21 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu Sep 27 2012 Jeffrey Ollie <jeff@ocjtech.us> - 2.3.5-1
+- Bugs fixed
+-
+-  * Crash when merging text nodes in element.remove().
+-  * Crash in sax/target parser when reporting empty doctype.
+
+* Thu Sep 27 2012 Jeffrey Ollie <jeff@ocjtech.us> - 2.3.4-1
+- Bugs fixed
+-
+-  * Crash when building an nsmap (Element property) with empty namespace
+-    URIs.
+-  * Crash due to race condition when errors (or user messages) occur during
+-    threaded XSLT processing (or compilation).
+-  * XSLT stylesheet compilation could ignore compilation errors.
+
 * Sat Aug 04 2012 David Malcolm <dmalcolm@redhat.com> - 2.3.3-4
 - rebuild for https://fedoraproject.org/wiki/Features/Python_3.3
 
