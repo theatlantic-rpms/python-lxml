@@ -5,15 +5,15 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        2.3.5
+Version:        3.0
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
 License:        BSD
-URL:            http://codespeak.net/lxml/
-Source0:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz
-Source1:        http://cheeseshop.python.org/packages/source/l/lxml/lxml-%{version}.tar.gz.asc
+URL:            http://lxml.de
+Source0:        http://lxml.de/files/lxml-%{version}.tgz
+Source1:        http://lxml.de/files/lxml-%{version}.tgz.asc
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -21,7 +21,7 @@ BuildRequires:  libxslt-devel
 
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
-BuildRequires:  Cython >= 0.12
+BuildRequires:  Cython >= 0.17.1
 
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
@@ -63,6 +63,7 @@ unlike the default bindings.
 
 # remove the C extension so that it will be rebuilt using the latest Cython
 rm -f src/lxml/lxml.etree.c
+rm -f src/lxml/lxml.etree.h
 rm -f src/lxml/lxml.etree_api.h
 rm -f src/lxml/lxml.objectify.c
 
@@ -77,25 +78,26 @@ cp -r . %{py3dir}
 %endif
 
 %build
-CFLAGS="%{optflags}" %{__python} setup.py build
+CFLAGS="%{optflags}" %{__python} setup.py build --with-cython
 
 %if 0%{?with_python3}
 cp src/lxml/lxml.etree.c %{py3dir}/src/lxml
+cp src/lxml/lxml.etree.h %{py3dir}/src/lxml
 cp src/lxml/lxml.etree_api.h %{py3dir}/src/lxml
 cp src/lxml/lxml.objectify.c %{py3dir}/src/lxml
 
 pushd %{py3dir}
-CFLAGS="%{optflags}" %{__python3} setup.py build
+CFLAGS="%{optflags}" %{__python3} setup.py build --with-cython
 popd
 %endif
 
 %install
 rm -rf %{buildroot}
-%{__python} setup.py install --skip-build --no-compile --root %{buildroot}
+%{__python} setup.py install --skip-build --no-compile --with-cython --root %{buildroot}
 
 %if 0%{?with_python3}
 pushd %{py3dir}
-%{__python3} setup.py install --skip-build --no-compile --root %{buildroot}
+%{__python3} setup.py install --skip-build --no-compile --with-cython --root %{buildroot}
 popd
 %endif
 
@@ -121,6 +123,186 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Wed Oct 10 2012 Jeffrey Ollie <jcollie@desktop01.dmacc.net> - 3.0-1
+- 3.0 (2012-10-08)
+- ================
+-
+- Features added
+- --------------
+-
+- Bugs fixed
+- ----------
+-
+- * End-of-file handling was incorrect in iterparse() when reading from
+-   a low-level C file stream and failed in libxml2 2.9.0 due to its
+-   improved consistency checks.
+-
+- Other changes
+- -------------
+-
+- * The build no longer uses Cython by default unless the generated C files
+-   are missing.  To use Cython, pass the option "--with-cython".  To ignore
+-   the fatal build error when Cython is required but not available (e.g. to
+-   run special setup.py commands that do not actually run a build), pass
+-   "--without-cython".
+-
+-
+- 3.0beta1 (2012-09-26)
+- =====================
+-
+- Features added
+- --------------
+-
+- * Python level access to (optional) libxml2 memory debugging features
+-   to simplify debugging of memory leaks etc.
+-
+- Bugs fixed
+- ----------
+-
+- * Fix a memory leak in XPath by switching to Cython 0.17.1.
+-
+- * Some tests were adapted to work with PyPy.
+-
+- Other changes
+- -------------
+-
+- * The code was adapted to work with the upcoming libxml2 2.9.0 release.
+-
+-
+- 3.0alpha2 (2012-08-23)
+- ======================
+-
+- Features added
+- --------------
+-
+- * The .iter() method of elements now accepts tag arguments like "{*}name"
+-   to search for elements with a given local name in any namespace.  With
+-   this addition, all combinations of wildcards now work as expected:
+-   "{ns}name", "{}name", "{*}name", "{ns}*", "{}*" and "{*}*".  Note that
+-   "name" is equivalent to "{}name", but "*" is "{*}*".  The same change
+-   applies to the .getiterator(), .itersiblings(), .iterancestors(),
+-   .iterdescendants(), .iterchildren() and .itertext() methods,  the
+-   strip_attributes(), strip_elements() and strip_tags() functions as well
+-   as the iterparse() function.
+-
+- * C14N allows specifying the inclusive prefixes to be promoted to
+-   top-level during exclusive serialisation.
+-
+- Bugs fixed
+- ----------
+-
+- * Passing long Unicode strings into the feed() parser interface failed to
+-   read the entire string.
+-
+- Other changes
+- -------------
+-
+-
+- 3.0alpha1 (2012-07-31)
+- ======================
+-
+- Features added
+- --------------
+-
+- * Initial support for building in PyPy (through cpyext).
+-
+- * DTD objects gained an API that allows read access to their
+-   declarations.
+-
+- * xpathgrep.py gained support for parsing line-by-line (e.g.
+-   from grep output) and for surrounding the output with a new root
+-   tag.
+-
+- * E-factory in lxml.builder accepts subtypes of known data
+-   types (such as string subtypes) when building elements around them.
+-
+- * Tree iteration and iterparse() with a selective tag
+-   argument supports passing a set of tags.  Tree nodes will be
+-   returned by the iterators if they match any of the tags.
+-
+- Bugs fixed
+- ----------
+-
+- * The .find*() methods in lxml.objectify no longer use XPath
+-   internally, which makes them faster in many cases (especially when
+-   short circuiting after a single or couple of elements) and fixes
+-   some behavioural differences compared to lxml.etree.  Note that
+-   this means that they no longer support arbitrary XPath expressions
+-   but only the subset that the ElementPath language supports.
+-   The previous implementation was also redundant with the normal
+-   XPath support, which can be used as a replacement.
+-
+- * el.find('*') could accidentally return a comment or processing
+-   instruction that happened to be in the wrong spot.  (Same for the
+-   other .find*() methods.)
+-
+- * The error logging is less intrusive and avoids a global setup where
+-   possible.
+-
+- * Fixed undefined names in html5lib parser.
+-
+- * xpathgrep.py did not work in Python 3.
+-
+- * Element.attrib.update() did not accept an attrib of
+-   another Element as parameter.
+-
+- * For subtypes of ElementBase that make the .text or .tail
+-   properties immutable (as in objectify, for example), inserting text
+-   when creating Elements through the E-Factory feature of the class
+-   constructor would fail with an exception, stating that the text
+-   cannot be modified.
+-
+- Other changes
+- --------------
+-
+- * The code base was overhauled to properly use 'const' where the API
+-   of libxml2 and libxslt requests it.  This also has an impact on the
+-   public C-API of lxml itself, as defined in etreepublic.pxd, as
+-   well as the provided declarations in the lxml/includes/ directory.
+-   Code that uses these declarations may have to be adapted.  On the
+-   plus side, this fixes several C compiler warnings, also for user
+-   code, thus making it easier to spot real problems again.
+-
+- * The functionality of "lxml.cssselect" was moved into a separate PyPI
+-   package called "cssselect".  To continue using it, you must install
+-   that package separately.  The "lxml.cssselect" module is still
+-   available and provides the same interface, provided the "cssselect"
+-   package can be imported at runtime.
+-
+- * Element attributes passed in as an attrib dict or as keyword
+-   arguments are now sorted by (namespaced) name before being created
+-   to make their order predictable for serialisation and iteration.
+-   Note that adding or deleting attributes afterwards does not take
+-   that order into account, i.e. setting a new attribute appends it
+-   after the existing ones.
+-
+- * Several classes that are for internal use only were removed
+-   from the lxml.etree module dict:
+-   _InputDocument, _ResolverRegistry, _ResolverContext, _BaseContext,
+-   _ExsltRegExp, _IterparseContext, _TempStore, _ExceptionContext,
+-   __ContentOnlyElement, _AttribIterator, _NamespaceRegistry,
+-   _ClassNamespaceRegistry, _FunctionNamespaceRegistry,
+-   _XPathFunctionNamespaceRegistry, _ParserDictionaryContext,
+-   _FileReaderContext, _ParserContext, _PythonSaxParserTarget,
+-   _TargetParserContext, _ReadOnlyProxy, _ReadOnlyPIProxy,
+-   _ReadOnlyEntityProxy, _ReadOnlyElementProxy, _OpaqueNodeWrapper,
+-   _OpaqueDocumentWrapper, _ModifyContentOnlyProxy,
+-   _ModifyContentOnlyPIProxy, _ModifyContentOnlyEntityProxy,
+-   _AppendOnlyElementProxy, _SaxParserContext, _FilelikeWriter,
+-   _ParserSchemaValidationContext, _XPathContext,
+-   _XSLTResolverContext, _XSLTContext, _XSLTQuotedStringParam
+-
+- * Several internal classes can no longer be inherited from:
+-   _InputDocument, _ResolverRegistry, _ExsltRegExp, _ElementUnicodeResult,
+-   _IterparseContext, _TempStore, _AttribIterator, _ClassNamespaceRegistry,
+-   _XPathFunctionNamespaceRegistry, _ParserDictionaryContext,
+-   _FileReaderContext, _PythonSaxParserTarget, _TargetParserContext,
+-   _ReadOnlyPIProxy, _ReadOnlyEntityProxy, _OpaqueDocumentWrapper,
+-   _ModifyContentOnlyPIProxy, _ModifyContentOnlyEntityProxy,
+-   _AppendOnlyElementProxy, _FilelikeWriter, _ParserSchemaValidationContext,
+-   _XPathContext, _XSLTResolverContext, _XSLTContext,
+-   _XSLTQuotedStringParam, _XSLTResultTree, _XSLTProcessingInstruction
+
 * Thu Sep 27 2012 Jeffrey Ollie <jeff@ocjtech.us> - 2.3.5-1
 - Bugs fixed
 -
