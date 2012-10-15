@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.0
+Version:        3.0.1
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -123,7 +123,16 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
-* Wed Oct 10 2012 Jeffrey Ollie <jcollie@desktop01.dmacc.net> - 3.0-1
+* Mon Oct 15 2012 Jeffrey Ollie <jeff@ocjtech.us> - 3.0.1-1
+- 3.0.1 (2012-10-14)
+- Bugs fixed
+-
+-  * LP#1065924: Element proxies could disappear during garbage collection
+-    in PyPy without proper cleanup.
+-  * GH#71: Failure to work with libxml2 2.6.x.
+-  * LP#1065139: static MacOS-X build failed in Py3.
+
+* Wed Oct 10 2012 Jeffrey Ollie <jeff@ocjtech.us> - 3.0-1
 - 3.0 (2012-10-08)
 - ================
 -
