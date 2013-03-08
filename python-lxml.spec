@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.0.1
-Release:        2%{?dist}
+Version:        3.1.0
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -123,6 +123,72 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Fri Mar  8 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.1.0-1
+- 3.1.0 (2013-02-10)
+- ==================
+-
+- Features added
+- --------------
+-
+- * GH#89: lxml.html.clean allows overriding the set of attributes that it
+-   considers 'safe'.  Patch by Francis Devereux.
+-
+- Bugs fixed
+- ----------
+-
+- * LP#1104370: ``copy.copy(el.attrib)`` raised an exception.  It now returns
+-   a copy of the attributes as a plain Python dict.
+-
+- * GH#95: When used with namespace prefixes, the  ``el.find*()`` methods
+-   always used the first namespace mapping that was provided for each
+-   path expression instead of using the one that was actually passed
+-   in for the current run.
+-
+- * LP#1092521, GH#91: Fix undefined C symbol in Python runtimes compiled
+-   without threading support.  Patch by Ulrich Seidl.
+-
+- Other changes
+- -------------
+-
+-
+- 3.1beta1 (2012-12-21)
+- =====================
+-
+- Features added
+- --------------
+-
+- * New build-time option ``--with-unicode-strings`` for Python 2 that
+-   makes the API always return Unicode strings for names and text
+-   instead of byte strings for plain ASCII content.
+-
+- * New incremental XML file writing API ``etree.xmlfile()``.
+-
+- * E factory in lxml.objectify is callable to simplify the creation of
+-   tags with non-identifier names without having to resort to getattr().
+-
+- Bugs fixed
+- ----------
+-
+- * When starting from a non-namespaced element in lxml.objectify, searching
+-   for a child without explicitly specifying a namespace incorrectly found
+-   namespaced elements with the requested local name, instead of restricting
+-   the search to non-namespaced children.
+-
+- * GH#85: Deprecation warnings were fixed for Python 3.x.
+-
+- * GH#33: lxml.html.fromstring() failed to accept bytes input in Py3.
+-
+- * LP#1080792: Static build of libxml2 2.9.0 failed due to missing file.
+-
+- Other changes
+- -------------
+-
+- * The externally useless class ``_ObjectifyElementMakerCaller`` was
+-   removed from the module API of lxml.objectify.
+-
+- * LP#1075622: lxml.builder is faster for adding text to elements with
+-   many children.  Patch by Anders Hammarquist.
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.0.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
