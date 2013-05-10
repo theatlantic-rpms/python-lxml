@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.1.0
+Version:        3.2.0
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -123,6 +123,72 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Fri May 10 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.2.0-1
+- 3.2.0 (2013-04-28)
+- ==================
+-
+- Features added
+- --------------
+-
+- Bugs fixed
+- ----------
+-
+- * LP#690319: Leading whitespace could change the behaviour of the string
+-   parsing functions in ``lxml.html``.
+-
+- * LP#599318: The string parsing functions in ``lxml.html`` are more robust
+-   in the face of uncommon HTML content like framesets or missing body tags.
+-   Patch by Stefan Seelmann.
+-
+- * LP#712941: I/O errors while trying to access files with paths that
+-   contain non-ASCII characters could raise ``UnicodeDecodeError`` instead
+-   of properly reporting the ``IOError``.
+-
+- * LP#673205: Parsing from in-memory strings disabled network access in the
+-   default parser and made subsequent attempts to parse from a URL fail.
+-
+- * LP#971754: lxml.html.clean appends 'nofollow' to 'rel' attributes instead
+-   of overwriting the current value.
+-
+- * LP#715687: lxml.html.clean no longer discards scripts that are explicitly
+-   allowed by the user provided whitelist.  Patch by Christine Koppelt.
+-
+- 3.1.2 (2013-04-12)
+- ==================
+-
+- Bugs fixed
+- ----------
+-
+- * LP#1136509: Passing attributes through the namespace-unaware API of
+-   the sax bridge (i.e. the ``handler.startElement()`` method) failed
+-   with a ``TypeError``.  Patch by Mike Bayer.
+-
+- * LP#1123074: Fix serialisation error in XSLT output when converting
+-   the result tree to a Unicode string.
+-
+- * GH#105: Replace illegal usage of ``xmlBufLength()`` in libxml2 2.9.0
+-   by properly exported API function ``xmlBufUse()``.
+-
+- 3.1.1 (2013-03-29)
+- ==================
+-
+- Features added
+- --------------
+-
+- Bugs fixed
+- ----------
+-
+- * LP#1160386: Write access to ``lxml.html.FormElement.fields`` raised
+-   an AttributeError in Py3.
+-
+- * Illegal memory access during cleanup in incremental xmlfile writer.
+-
+- Other changes
+- -------------
+-
+- * The externally useless class ``lxml.etree._BaseParser`` was removed
+-   from the module dict.
+
 * Fri Mar  8 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.1.0-1
 - 3.1.0 (2013-02-10)
 - ==================
