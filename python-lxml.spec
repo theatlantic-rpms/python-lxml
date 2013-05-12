@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.2.0
+Version:        3.2.1
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -123,6 +123,32 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sun May 12 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.2.1-1
+- 3.2.1 (2013-05-11)
+- ==================
+-
+- Features added
+- --------------
+-
+- * The methods ``apply_templates()`` and ``process_children()`` of XSLT
+-   extension elements have gained two new boolean options ``elements_only``
+-   and ``remove_blank_text`` that discard either all strings or
+-   whitespace-only strings from the result list.
+-
+- Bugs fixed
+- ----------
+-
+- * When moving Elements to another tree, the namespace cleanup mechanism
+-   no longer drops namespace prefixes from attributes for which it finds
+-   a default namespace declaration, to prevent them from appearing as
+-   unnamespaced attributes after serialisation.
+-
+- * Returning non-type objects from a custom class lookup method could lead
+-   to a crash.
+-
+- * Instantiating and using subtypes of Comments and ProcessingInstructions
+-   crashed.
+
 * Fri May 10 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.2.0-1
 - 3.2.0 (2013-04-28)
 - ==================
