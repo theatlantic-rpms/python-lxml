@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.2.1
+Version:        3.2.3
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -123,6 +123,30 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sun Jul 28 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.2.3-1
+- and here's a version 3.2.3. The last release accidentally lost the ability
+- to work on Python 2.4. There are no other changes over 3.2.2.
+-
+- 3.2.2 (2013-07-28)
+- ==================
+-
+- Features added
+- --------------
+-
+- Bugs fixed
+- ----------
+-
+- * LP#1185701: spurious XMLSyntaxError after finishing iterparse().
+-
+- * Crash in lxml.objectify during xsi annotation.
+-
+- Other changes
+- -------------
+-
+- * Return values of user provided element class lookup methods are now
+-   validated against the type of the XML node they represent to prevent
+-   API class mismatches.
+
 * Sun May 12 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.2.1-1
 - 3.2.1 (2013-05-11)
 - ==================
@@ -1144,7 +1168,7 @@ rm -rf %{buildroot}
 * Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 1.3.6-2
 - Autorebuild for GCC 4.3
 
-* Mon Nov  4 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.6-1
+* Sun Nov  4 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.6-1
 - Update to 1.3.6.
 
 * Mon Oct 22 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.3.5-1
