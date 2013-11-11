@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.2.3
-Release:        2%{?dist}
+Version:        3.2.4
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -125,6 +125,24 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Nov 11 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.2.4-1
+- 3.2.4 (2013-11-07)
+- ==================
+-
+- Bugs fixed
+- ----------
+-
+- * Memory leak when creating an XPath evaluator in a thread.
+-
+- * LP#1228881: ``repr(XSLTAccessControl)`` failed in Python 3.
+-
+- * Raise ``ValueError`` when trying to append an Element to itself or
+-   to one of its own descendants.
+-
+- * LP#1206077: htmldiff discarded whitespace from the output.
+-
+- * Compressed plain-text serialisation to file-like objects was broken.
+
 * Wed Sep 18 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.2.3-2
 - Add requirement for on python-cssselect for the python2 version
 
