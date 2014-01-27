@@ -5,7 +5,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.2.4
+Version:        3.3.0
 Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -125,6 +125,182 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Jan 27 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.0-1
+- 3.3.0 (2014-01-26)
+- ==================
+-
+- Features added
+- --------------
+-
+- Bugs fixed
+- ----------
+-
+- * The heuristic that distinguishes file paths from URLs was tightened
+-   to produce less false negatives.
+-
+- Other changes
+- -------------
+-
+-
+- 3.3.0beta5 (2014-01-18)
+- =======================
+-
+- Features added
+- --------------
+-
+- * The PEP 393 unicode parsing support gained a fallback for wchar strings
+-   which might still be somewhat common on Windows systems.
+-
+- Bugs fixed
+- ----------
+-
+- * Several error handling problems were fixed throughout the code base that
+-   could previously lead to exceptions being silently swallowed or not
+-   properly reported.
+-
+- * The C-API function ``appendChild()`` is now deprecated as it does not
+-   propagate exceptions (its return type is ``void``).  The new function
+-   ``appendChildToElement()`` was added as a safe replacement.
+-
+- * Passing a string into ``fromstringlist()`` raises an exception instead of
+-   parsing the string character by character.
+-
+- Other changes
+- -------------
+-
+- * Document cleanup code was simplified using the new GC features in
+-   Cython 0.20.
+-
+-
+- 3.3.0beta4 (2014-01-12)
+- =======================
+-
+- Features added
+- --------------
+-
+- Bugs fixed
+- ----------
+-
+- * The (empty) value returned by the ``attrib`` property of Entity and
+-   Comment objects was mutable.
+-
+- * Element class lookup wasn't available for the new pull parsers or when
+-   using a custom parser target.
+-
+- * Setting Element attributes on instantiation with both the ``attrib``
+-   argument and keyword arguments could modify the mapping passed as
+-   ``attrib``.
+-
+- * LP#1266171: DTDs instantiated from internal/external subsets (i.e.
+-   through the docinfo property) lost their attribute declarations.
+-
+- Other changes
+- -------------
+-
+- * Built with Cython 0.20pre (gitrev 012ae82eb) to prepare support for
+-   Python 3.4.
+-
+-
+- 3.3.0beta3 (2014-01-02)
+- =======================
+-
+- Features added
+- --------------
+-
+- * Unicode string parsing was optimised for Python 3.3 (PEP 393).
+-
+- Bugs fixed
+- ----------
+-
+- * HTML parsing of Unicode strings could misdecode the input on some
+-   platforms.
+-
+- * Crash in xmlfile() when closing open elements out of order in an error
+-   case.
+-
+- Other changes
+- -------------
+-
+-
+- 3.3.0beta2 (2013-12-20)
+- =======================
+-
+- Features added
+- --------------
+-
+- * ``iterparse()`` supports the ``recover`` option.
+-
+- Bugs fixed
+- ----------
+-
+- * Crash in ``iterparse()`` for HTML parsing.
+-
+- * Crash in target parsing with attributes.
+-
+- Other changes
+- -------------
+-
+- * The safety check in the read-only tree implementation (e.g. used by
+-   ``PythonElementClassLookup``) raises a more appropriate
+-   ``ReferenceError`` for illegal access after tree disposal instead of
+-   an ``AssertionError``. This should only impact test code that
+-   specifically checks the original behaviour.
+-
+-
+- 3.3.0beta1 (2013-12-12)
+- =======================
+-
+- Features added
+- --------------
+-
+- * New option ``handle_failures`` in ``make_links_absolute()`` and
+-   ``resolve_base_href()`` (lxml.html) that enables ignoring or
+-   discarding links that fail to parse as URLs.
+-
+- * New parser classes ``XMLPullParser`` and ``HTMLPullParser`` for
+-   incremental parsing, as implemented for ElementTree in Python 3.4.
+-
+- * ``iterparse()`` enables recovery mode by default for HTML parsing
+-   (``html=True``).
+-
+- Bugs fixed
+- ----------
+-
+- * LP#1255132: crash when trying to run validation over non-Element (e.g.
+-   comment or PI).
+-
+- * Error messages in the log and in exception messages that originated
+-   from libxml2 could accidentally be picked up from preceding warnings
+-   instead of the actual error.
+-
+- * The ``ElementMaker`` in lxml.objectify did not accept a dict as
+-   argument for adding attributes to the element it's building. This
+-   works as in lxml.builder now.
+-
+- * LP#1228881: ``repr(XSLTAccessControl)`` failed in Python 3.
+-
+- * Raise ``ValueError`` when trying to append an Element to itself or
+-   to one of its own descendants, instead of running into an infinite
+-   loop.
+-
+- * LP#1206077: htmldiff discarded whitespace from the output.
+-
+- * Compressed plain-text serialisation to file-like objects was broken.
+-
+- * lxml.html.formfill: Fix textarea form filling.
+-   The textarea used to be cleared before the new content was set,
+-   which removed the name attribute.
+-
+- Other changes
+- -------------
+-
+- * Some basic API classes use freelists internally for faster
+-   instantiation.  This can speed up some ``iterparse()`` scenarios,
+-   for example.
+-
+- * ``iterparse()`` was rewritten to use the new ``*PullParser``
+-   classes internally instead of being a parser itself.
+
 * Mon Nov 11 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.2.4-1
 - 3.2.4 (2013-11-07)
 - ==================
