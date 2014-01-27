@@ -125,7 +125,7 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
-* Mon Jan 27 2013 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.0-1
+* Mon Jan 27 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.0-1
 - 3.3.0 (2014-01-26)
 - ==================
 -
