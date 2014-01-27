@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        3.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -21,7 +21,7 @@ BuildRequires:  libxslt-devel
 
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
-BuildRequires:  Cython >= 0.17.1
+BuildRequires:  Cython >= 0.20
 
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
@@ -125,6 +125,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Jan 27 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.0-2
+- Update Cython requirement to >= 0.20
+
 * Mon Jan 27 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.0-1
 - 3.3.0 (2014-01-26)
 - ==================
