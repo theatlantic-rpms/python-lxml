@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.3.0
-Release:        2%{?dist}
+Version:        3.3.2
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -125,6 +125,54 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Fri Feb 28 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.2-1
+- 3.3.2 (2014-02-26)
+- ==================
+-
+- Bugs fixed
+- ----------
+-
+- * The properties ``resolvers`` and ``version``, as well as the methods
+-   ``set_element_class_lookup()`` and ``makeelement()``, were lost from
+-   ``iterparse`` objects.
+-
+- * LP#1222132: instances of ``XMLSchema``, ``Schematron`` and ``RelaxNG``
+-   did not clear their local ``error_log`` before running a validation.
+-
+- * LP#1238500: lxml.doctestcompare mixed up "expected" and "actual" in
+-   attribute values.
+-
+- * Some file I/O tests were failing in MS-Windows due to incorrect temp
+-   file usage.  Initial patch by Gabi Davar.
+-
+- * LP#910014: duplicate IDs in a document were not reported by DTD
+-   validation.
+-
+- * LP#1185332: ``tostring(method="html")`` did not use HTML serialisation
+-   semantics for trailing tail text.  Initial patch by Sylvain Viollon.
+-
+- * LP#1281139: ``.attrib`` value of Comments lost its mutation methods
+-   in 3.3.0.  Even though it is empty and immutable, it should still
+-   provide the same interface as that returned for Elements.
+
+* Fri Feb 28 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.2-1
+- 3.3.1 (2014-02-12)
+- ==================
+-
+- Bugs fixed
+- ----------
+-
+- * LP#1014290: HTML documents parsed with ``parser.feed()`` failed to find
+-   elements during tag iteration.
+-
+- * LP#1273709: Building in PyPy failed due to missing support for
+-   ``PyUnicode_Compare()`` and ``PyByteArray_*()`` in PyPy's C-API.
+-
+- * LP#1274413: Compilation in MSVC failed due to missing "stdint.h" standard
+-   header file.
+-
+- * LP#1274118: iterparse() failed to parse BOM prefixed files.
+
 * Mon Jan 27 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.0-2
 - Update Cython requirement to >= 0.20
 
