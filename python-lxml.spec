@@ -5,8 +5,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.3.2
-Release:        2%{?dist}
+Version:        3.3.3
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -148,6 +148,21 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Tue Mar 11 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-1
+- 3.3.3 (2014-03-04)
+- ==================
+-
+- Bugs fixed
+- ----------
+-
+- * LP#1287118: Crash when using Element subtypes with ``__slots__``.
+-
+- Other changes
+- -------------
+-
+- * The internal classes ``_LogEntry`` and ``_Attrib`` can no longer be
+-   subclassed from Python code.
+
 * Tue Mar 11 2014 Alexander Todorov <atodorov@redhat.com> - 3.3.2-2
 - Add check section #1075070
 
