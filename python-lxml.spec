@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        3.3.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -103,6 +103,29 @@ pushd %{py3dir}
 popd
 %endif
 
+%check
+BUILD_LIB_DIR=$(find $(pwd) -name "*.so" | head -n 1 | xargs dirname)
+cp $BUILD_LIB_DIR/*.so src/lxml
+export LANG=en_US.utf8
+%{__python} test.py -p -v
+export PYTHONPATH=src
+%{__python} selftest.py
+%{__python} selftest2.py
+
+%if 0%{?with_python3}
+pushd %{py3dir}
+
+BUILD_LIB_DIR=$(find $(pwd) -name "*.so" | head -n 1 | xargs dirname)
+cp $BUILD_LIB_DIR/*.so src/lxml
+export LANG=en_US.utf8
+%{__python3} test.py -p -v
+export PYTHONPATH=src
+%{__python3} selftest.py
+%{__python3} selftest2.py
+
+popd
+%endif
+
 %clean
 rm -rf %{buildroot}
 
@@ -125,6 +148,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Tue Mar 11 2014 Alexander Todorov <atodorov@redhat.com> - 3.3.2-2
+- Add check section #1075070
+
 * Fri Feb 28 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.2-1
 - 3.3.2 (2014-02-26)
 - ==================
