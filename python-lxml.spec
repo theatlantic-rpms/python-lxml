@@ -6,7 +6,7 @@
 
 Name:           python-lxml
 Version:        3.3.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -21,14 +21,19 @@ BuildRequires:  libxslt-devel
 
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
+BuildRequires:  python-cssselect
 BuildRequires:  Cython >= 0.20
+
+Requires:       python-cssselect
 
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+BuildRequires:  python3-cssselect
+
+Requires:       python3-cssselect
 %endif
 
-Requires:       python-cssselect
 
 %description
 lxml provides a Python binding to the libxslt and libxml2 libraries.
@@ -148,6 +153,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Mar 24 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-2
+- BZ#1075070  add requires and buildrequires for cssselect
+
 * Tue Mar 11 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-1
 - 3.3.3 (2014-03-04)
 - ==================
