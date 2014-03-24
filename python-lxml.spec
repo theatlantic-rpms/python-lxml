@@ -2,11 +2,15 @@
 %global with_python3 1
 %endif
 
+%if %{?fedora} >= 20
+%global with_python3_cssselect
+%endif
+
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
 Version:        3.3.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -29,11 +33,12 @@ Requires:       python-cssselect
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+%if 0%{?with_python3_cssselect}
 BuildRequires:  python3-cssselect
 
 Requires:       python3-cssselect
 %endif
-
+%endif
 
 %description
 lxml provides a Python binding to the libxslt and libxml2 libraries.
@@ -153,6 +158,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Mar 24 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-3
+- python3-cssselect is not available on F19
+
 * Mon Mar 24 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-2
 - BZ#1075070  add requires and buildrequires for cssselect
 
