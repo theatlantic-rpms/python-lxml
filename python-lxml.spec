@@ -35,8 +35,6 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 %if 0%{?with_python3_cssselect}
 BuildRequires:  python3-cssselect
-
-Requires:       python3-cssselect
 %endif
 %endif
 
@@ -60,6 +58,9 @@ This package provides the documentation for %{name}, e.g. the API as html.
 %package -n python3-lxml
 Summary:        ElementTree-like Python 3 bindings for libxml2 and libxslt
 Group:          Development/Libraries
+%if 0%{?with_python3_cssselect}
+Requires:       python3-cssselect
+%endif
 
 %description -n python3-lxml
 lxml provides a Python 3 binding to the libxslt and libxml2 libraries.
@@ -158,6 +159,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Wed Mar 26 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-3
+- Add python3-cssselect to correct package
+
 * Mon Mar 24 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-3
 - python3-cssselect is not available on F19
 
