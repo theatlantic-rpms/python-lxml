@@ -3,14 +3,14 @@
 %endif
 
 %if %{?fedora} >= 20
-%global with_python3_cssselect
+%global with_python3_cssselect 1
 %endif
 
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
 Version:        3.3.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -159,6 +159,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Wed Mar 26 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-4
+- Fix macro definition
+
 * Wed Mar 26 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-3
 - Add python3-cssselect to correct package
 
