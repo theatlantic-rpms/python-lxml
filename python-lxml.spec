@@ -9,8 +9,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.3.3
-Release:        4%{?dist}
+Version:        3.3.5
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -159,6 +159,31 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Apr 28 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.5-1
+- 3.3.5 (2014-04-18)
+- ==================
+-
+- Bugs fixed
+- ----------
+-
+- * HTML cleaning could fail to strip javascript links that mix control
+-   characters into the link scheme.
+
+* Mon Apr 28 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.4-1
+- 3.3.4 (2014-04-03)
+- ==================
+-
+- Features added
+- --------------
+-
+- * Source line numbers above 65535 are available on Elements when
+-   using libxml2 2.9 or later.
+-
+- Bugs fixed
+- ----------
+-
+- * lxml.html.fragment_fromstring() failed for bytes input in Py3.
+
 * Wed Mar 26 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.3-4
 - Fix macro definition
 
