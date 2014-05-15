@@ -10,7 +10,7 @@
 
 Name:           python-lxml
 Version:        3.3.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -159,6 +159,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Wed May 14 2014 Bohuslav Kabrda <bkabrda@redhat.com> - 3.3.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
+
 * Mon Apr 28 2014 Jeffrey Ollie <jeff@ocjtech.us> - 3.3.5-1
 - 3.3.5 (2014-04-18)
 - ==================
