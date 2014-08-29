@@ -9,8 +9,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.3.5
-Release:        4%{?dist}
+Version:        3.3.6
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -159,6 +159,20 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Fri Aug 29 2014 Jeffrey C. Ollie <jeff@ocjtech.us> - 3.3.6-1
+- 3.3.6 (2014-08-28)
+- ==================
+-
+- Bugs fixed
+- ----------
+-
+- * Prevent tree cycle creation when adding Elements as siblings.
+-
+- * LP#1361948: crash when deallocating Element siblings without parent.
+-
+- * LP#1354652: crash when traversing internally loaded documents in XSLT
+-   extension functions.
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org>
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
