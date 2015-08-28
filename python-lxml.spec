@@ -9,8 +9,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.3.6
-Release:        2%{?dist}
+Version:        3.4.4
+Release:        1%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -18,8 +18,6 @@ License:        BSD
 URL:            http://lxml.de
 Source0:        http://lxml.de/files/lxml-%{version}.tgz
 Source1:        http://lxml.de/files/lxml-%{version}.tgz.asc
-
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libxslt-devel
 
@@ -81,7 +79,7 @@ rm -f src/lxml/lxml.etree_api.h
 rm -f src/lxml/lxml.objectify.c
 
 chmod a-x doc/rest2html.py
-%{__sed} -i 's/\r//' doc/s5/ui/default/print.css \
+sed -i 's/\r//' doc/s5/ui/default/print.css \
     doc/s5/ep2008/atom.rng \
     doc/s5/ui/default/iepngfix.htc
 
@@ -105,7 +103,6 @@ popd
 %endif
 
 %install
-rm -rf %{buildroot}
 %{__python} setup.py install --skip-build --no-compile --with-cython --root %{buildroot}
 
 %if 0%{?with_python3}
@@ -137,28 +134,30 @@ export PYTHONPATH=src
 popd
 %endif
 
-%clean
-rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root,-)
-%doc LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt
+%{!?_licensedir:%global license %%doc}
+%license LICENSES.txt
+%doc PKG-INFO CREDITS.txt CHANGES.txt
 %{python_sitearch}/lxml
 %{python_sitearch}/lxml-*.egg-info
 
 %files docs
-%defattr(-,root,root,-)
 %doc doc/*
 
 %if 0%{?with_python3}
 %files -n python3-lxml
-%defattr(-,root,root,-)
-%doc LICENSES.txt PKG-INFO CREDITS.txt CHANGES.txt
+%license LICENSES.txt
+%doc PKG-INFO CREDITS.txt CHANGES.txt
 %{python3_sitearch}/lxml-*.egg-info
 %{python3_sitearch}/lxml
 %endif
 
 %changelog
+* Fri Aug 28 2015 Peter Robinson <pbrobinson@fedoraproject.org> 3.4.4-1
+- Update to 3.4.4
+- Use %%license, cleanup spec
+
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.3.6-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
