@@ -10,7 +10,7 @@
 
 Name:           python-lxml
 Version:        3.4.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -154,6 +154,9 @@ popd
 %endif
 
 %changelog
+* Fri Nov 06 2015 Robert Kuska <rkuska@redhat.com> - 3.4.4-2
+- Rebuilt for Python3.5 rebuild
+
 * Fri Aug 28 2015 Peter Robinson <pbrobinson@fedoraproject.org> 3.4.4-1
 - Update to 3.4.4
 - Use %%license, cleanup spec
