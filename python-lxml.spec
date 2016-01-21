@@ -2,7 +2,7 @@
 %global with_python3 1
 %endif
 
-%if %{?fedora} >= 20
+%if 0%{?fedora} >= 20
 %global with_python3_cssselect 1
 %endif
 
@@ -10,7 +10,7 @@
 
 Name:           python-lxml
 Version:        3.4.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -154,6 +154,9 @@ popd
 %endif
 
 %changelog
+* Thu Jan 21 2016 Dan Horák <dan[at]danny.cz> - 3.4.4-3
+- fix conditional
+
 * Fri Nov 06 2015 Robert Kuska <rkuska@redhat.com> - 3.4.4-2
 - Rebuilt for Python3.5 rebuild
 
