@@ -1,159 +1,90 @@
-%if 0%{?fedora} > 12
-%global with_python3 1
-%endif
+%global pypi_name lxml
 
-%if 0%{?fedora} >= 20
-%global with_python3_cssselect 1
-%endif
+Name:           python-%{pypi_name}
+Version:        3.6.4
+Release:        1%{?dist}
+Summary:        Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API
 
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
-Name:           python-lxml
-Version:        3.4.4
-Release:        5%{?dist}
-Summary:        ElementTree-like Python bindings for libxml2 and libxslt
-
-Group:          Development/Libraries
 License:        BSD
 URL:            http://lxml.de
-Source0:        http://lxml.de/files/lxml-%{version}.tgz
-Source1:        http://lxml.de/files/lxml-%{version}.tgz.asc
+Source0:        https://files.pythonhosted.org/packages/source/l/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 
+BuildRequires:  libxml2-devel
 BuildRequires:  libxslt-devel
 
-BuildRequires:  python-devel
 BuildRequires:  python-setuptools
-BuildRequires:  python-cssselect
-BuildRequires:  Cython >= 0.20
+BuildRequires:  python2-devel
 
-Requires:       python-cssselect
-
-%if 0%{?with_python3}
-BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-%if 0%{?with_python3_cssselect}
-BuildRequires:  python3-cssselect
-%endif
-%endif
+BuildRequires:  python3-devel
 
 %description
-lxml provides a Python binding to the libxslt and libxml2 libraries.
-It follows the ElementTree API as much as possible in order to provide
-a more Pythonic interface to libxml2 and libxslt than the default
-bindings.  In particular, lxml deals with Python Unicode strings
-rather than encoded UTF-8 and handles memory management automatically,
-unlike the default bindings.
+lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries. It
+provides safe and convenient access to these libraries using the ElementTree It
+extends the ElementTree API significantly to offer support for XPath, RelaxNG,
+XML Schema, XSLT, C14N and much more.To contact the project, go to the project
+home page < or see our bug tracker at case you want to use the current ...
 
-%package docs
-Summary:        Documentation for %{name}
-Group:          Documentation
-BuildArch:      noarch
-%description docs
-This package provides the documentation for %{name}, e.g. the API as html.
+%package -n     python2-%{pypi_name}
+Summary:        Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API
+Requires:       python-cssselect
+Requires:       python-html5lib
+Requires:       python-beautifulsoup4
+%{?python_provide:%python_provide python2-%{pypi_name}}
 
+%description -n python2-%{pypi_name}
+lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries. It
+provides safe and convenient access to these libraries using the ElementTree It
+extends the ElementTree API significantly to offer support for XPath, RelaxNG,
+XML Schema, XSLT, C14N and much more.To contact the project, go to the project
+home page < or see our bug tracker at case you want to use the current ...
 
-%if 0%{?with_python3}
-%package -n python3-lxml
-Summary:        ElementTree-like Python 3 bindings for libxml2 and libxslt
-Group:          Development/Libraries
-%if 0%{?with_python3_cssselect}
+%package -n     python3-%{pypi_name}
+Summary:        Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API
 Requires:       python3-cssselect
-%endif
+Requires:       python3-html5lib
+Requires:       python3-beautifulsoup4
+%{?python_provide:%python_provide python3-%{pypi_name}}
 
-%description -n python3-lxml
-lxml provides a Python 3 binding to the libxslt and libxml2 libraries.
-It follows the ElementTree API as much as possible in order to provide
-a more Pythonic interface to libxml2 and libxslt than the default
-bindings.  In particular, lxml deals with Python 3 Unicode strings
-rather than encoded UTF-8 and handles memory management automatically,
-unlike the default bindings.
-%endif
+%description -n python3-%{pypi_name}
+lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries. It
+provides safe and convenient access to these libraries using the ElementTree It
+extends the ElementTree API significantly to offer support for XPath, RelaxNG,
+XML Schema, XSLT, C14N and much more.To contact the project, go to the project
+home page < or see our bug tracker at case you want to use the current ...
 
 %prep
-%setup -q -n lxml-%{version}
-
-# remove the C extension so that it will be rebuilt using the latest Cython
-rm -f src/lxml/lxml.etree.c
-rm -f src/lxml/lxml.etree.h
-rm -f src/lxml/lxml.etree_api.h
-rm -f src/lxml/lxml.objectify.c
-
-chmod a-x doc/rest2html.py
-sed -i 's/\r//' doc/s5/ui/default/print.css \
-    doc/s5/ep2008/atom.rng \
-    doc/s5/ui/default/iepngfix.htc
-
-%if 0%{?with_python3}
-rm -rf %{py3dir}
-cp -r . %{py3dir}
-%endif
+%autosetup -n %{pypi_name}-%{version}
+rm -rf %{pypi_name}.egg-info
 
 %build
-CFLAGS="%{optflags}" %{__python} setup.py build --with-cython
-
-%if 0%{?with_python3}
-cp src/lxml/lxml.etree.c %{py3dir}/src/lxml
-cp src/lxml/lxml.etree.h %{py3dir}/src/lxml
-cp src/lxml/lxml.etree_api.h %{py3dir}/src/lxml
-cp src/lxml/lxml.objectify.c %{py3dir}/src/lxml
-
-pushd %{py3dir}
-CFLAGS="%{optflags}" %{__python3} setup.py build --with-cython
-popd
-%endif
+%py2_build
+%py3_build
 
 %install
-%{__python} setup.py install --skip-build --no-compile --with-cython --root %{buildroot}
-
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py install --skip-build --no-compile --with-cython --root %{buildroot}
-popd
-%endif
+%py3_install
+%py2_install
 
 %check
-BUILD_LIB_DIR=$(find $(pwd) -name "*.so" | head -n 1 | xargs dirname)
-cp $BUILD_LIB_DIR/*.so src/lxml
-export LANG=en_US.utf8
-%{__python} test.py -p -v
-export PYTHONPATH=src
-%{__python} selftest.py
-%{__python} selftest2.py
+%{__python2} setup.py test
+%{__python3} setup.py test
 
-%if 0%{?with_python3}
-pushd %{py3dir}
+%files -n python2-%{pypi_name}
+%license doc/licenses/ZopePublicLicense.txt LICENSES.txt
+%doc README.rst src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt
+%{python2_sitearch}/%{pypi_name}
+%{python2_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
-BUILD_LIB_DIR=$(find $(pwd) -name "*.so" | head -n 1 | xargs dirname)
-cp $BUILD_LIB_DIR/*.so src/lxml
-export LANG=en_US.utf8
-%{__python3} test.py -p -v
-export PYTHONPATH=src
-%{__python3} selftest.py
-%{__python3} selftest2.py
-
-popd
-%endif
-
-
-%files
-%{!?_licensedir:%global license %%doc}
-%license LICENSES.txt
-%doc PKG-INFO CREDITS.txt CHANGES.txt
-%{python_sitearch}/lxml
-%{python_sitearch}/lxml-*.egg-info
-
-%files docs
-%doc doc/*
-
-%if 0%{?with_python3}
-%files -n python3-lxml
-%license LICENSES.txt
-%doc PKG-INFO CREDITS.txt CHANGES.txt
-%{python3_sitearch}/lxml-*.egg-info
-%{python3_sitearch}/lxml
-%endif
+%files -n python3-%{pypi_name}
+%license doc/licenses/ZopePublicLicense.txt LICENSES.txt
+%doc README.rst src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt
+%{python3_sitearch}/%{pypi_name}
+%{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Thu Sep 08 2016 Fabio Alessandro Locati <fale@redhat.com> - 3.6.4-1
+- Update to 3.6.4
+
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.4.4-5
 - https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
 
