@@ -1,9 +1,3 @@
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%bcond_with python3
-%else
-%bcond_without with_python3
-%endif
-
 %global pypi_name lxml
 
 Name:           python-%{pypi_name}
@@ -21,10 +15,8 @@ BuildRequires:  libxslt-devel
 BuildRequires:  python-setuptools
 BuildRequires:  python2-devel
 
-%if %{with python3}
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-devel
-%endif # with python3
 
 %description
 lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries. It
@@ -47,7 +39,6 @@ extends the ElementTree API significantly to offer support for XPath, RelaxNG,
 XML Schema, XSLT, C14N and much more.To contact the project, go to the project
 home page < or see our bug tracker at case you want to use the current ...
 
-%if %{with python3}
 %package -n     python3-%{pypi_name}
 Summary:        Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API
 Requires:       python3-cssselect
@@ -61,7 +52,6 @@ provides safe and convenient access to these libraries using the ElementTree It
 extends the ElementTree API significantly to offer support for XPath, RelaxNG,
 XML Schema, XSLT, C14N and much more.To contact the project, go to the project
 home page < or see our bug tracker at case you want to use the current ...
-%endif # with python3
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
@@ -69,21 +59,15 @@ rm -rf %{pypi_name}.egg-info
 
 %build
 %py2_build
-%if %{with python3}
 %py3_build
-%endif # with python3
 
 %install
-%py2_install
-%if %{with python3}
 %py3_install
-%endif # with python3
+%py2_install
 
 %check
 %{__python2} setup.py test
-%if %{with python3}
 %{__python3} setup.py test
-%endif # with python3
 
 %files -n python2-%{pypi_name}
 %license doc/licenses/ZopePublicLicense.txt LICENSES.txt
@@ -91,13 +75,11 @@ rm -rf %{pypi_name}.egg-info
 %{python2_sitearch}/%{pypi_name}
 %{python2_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
-%if %{with python3}
 %files -n python3-%{pypi_name}
 %license doc/licenses/ZopePublicLicense.txt LICENSES.txt
 %doc README.rst src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt
 %{python3_sitearch}/%{pypi_name}
 %{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif # with python3
 
 %changelog
 * Thu Sep 08 2016 Fabio Alessandro Locati <fale@redhat.com> - 3.6.4-1
