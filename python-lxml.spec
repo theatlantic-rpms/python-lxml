@@ -1,7 +1,7 @@
 %global pypi_name lxml
 
 Name:           python-%{pypi_name}
-Version:        3.6.4
+Version:        3.7.0
 Release:        1%{?dist}
 Summary:        Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API
 
@@ -82,6 +82,9 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Sun Dec 11 2016 Fabio Alessandro Locati <fale@redhat.com> - 3.7.0-1
+- Update to 3.7.0
+
 * Thu Sep 08 2016 Fabio Alessandro Locati <fale@redhat.com> - 3.6.4-1
 - Update to 3.6.4
 
