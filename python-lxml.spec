@@ -3,7 +3,7 @@
 Name:           python-%{pypi_name}
 Version:        3.7.0
 Release:        1%{?dist}
-Summary:        Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API
+Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 
 License:        BSD
 URL:            http://lxml.de
@@ -26,7 +26,7 @@ XML Schema, XSLT, C14N and much more.To contact the project, go to the project
 home page < or see our bug tracker at case you want to use the current ...
 
 %package -n     python2-%{pypi_name}
-Summary:        Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API
+Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 Requires:       python-cssselect
 Requires:       python-html5lib
 Requires:       python-beautifulsoup4
@@ -40,7 +40,7 @@ XML Schema, XSLT, C14N and much more.To contact the project, go to the project
 home page < or see our bug tracker at case you want to use the current ...
 
 %package -n     python3-%{pypi_name}
-Summary:        Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API
+Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 Requires:       python3-cssselect
 Requires:       python3-html5lib
 Requires:       python3-beautifulsoup4
