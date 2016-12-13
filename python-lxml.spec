@@ -2,7 +2,7 @@
 
 Name:           python-%{pypi_name}
 Version:        3.7.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 
 License:        BSD
@@ -78,6 +78,9 @@ home page < or see our bug tracker at case you want to use the current ...
 %{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Tue Dec 13 2016 Stratakis Charalampos <cstratak@redhat.com> - 3.7.0-2
+- Rebuild for Python 3.6
+
 * Sun Dec 11 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.0-1
 - Update to 3.7.0
 
