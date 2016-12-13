@@ -9,15 +9,6 @@ License:        BSD
 URL:            http://lxml.de
 Source0:        https://files.pythonhosted.org/packages/source/l/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 
-BuildRequires:  libxml2-devel
-BuildRequires:  libxslt-devel
-
-BuildRequires:  python-setuptools
-BuildRequires:  python2-devel
-
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-devel
-
 %description
 lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries. It
 provides safe and convenient access to these libraries using the ElementTree It
@@ -27,6 +18,10 @@ home page < or see our bug tracker at case you want to use the current ...
 
 %package -n     python2-%{pypi_name}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
+BuildRequires:  python-setuptools
+BuildRequires:  python2-devel
+BuildRequires:  libxml2-devel
+BuildRequires:  libxslt-devel
 Requires:       python-cssselect
 Requires:       python-html5lib
 Requires:       python-beautifulsoup4
@@ -41,6 +36,8 @@ home page < or see our bug tracker at case you want to use the current ...
 
 %package -n     python3-%{pypi_name}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
+BuildRequires:  python3-setuptools
+BuildRequires:  python3-devel
 Requires:       python3-cssselect
 Requires:       python3-html5lib
 Requires:       python3-beautifulsoup4
@@ -55,15 +52,14 @@ home page < or see our bug tracker at case you want to use the current ...
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
-rm -rf %{pypi_name}.egg-info
 
 %build
 %py2_build
 %py3_build
 
 %install
-%py3_install
 %py2_install
+%py3_install
 
 %check
 %{__python2} setup.py test
@@ -82,10 +78,10 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Sun Dec 11 2016 Fabio Alessandro Locati <fale@redhat.com> - 3.7.0-1
+* Sun Dec 11 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.0-1
 - Update to 3.7.0
 
-* Thu Sep 08 2016 Fabio Alessandro Locati <fale@redhat.com> - 3.6.4-1
+* Thu Sep 08 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.6.4-1
 - Update to 3.6.4
 
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.4.4-5
