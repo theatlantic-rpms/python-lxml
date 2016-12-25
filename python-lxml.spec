@@ -81,6 +81,9 @@ home page < or see our bug tracker at case you want to use the current ...
 * Sun Dec 25 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.1-1
 - Update to 3.7.1
 
+* Tue Dec 13 2016 Stratakis Charalampos <cstratak@redhat.com> - 3.7.0-2
+- Rebuild for Python 3.6
+
 * Sun Dec 11 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.0-1
 - Update to 3.7.0
 
