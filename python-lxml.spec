@@ -1,13 +1,13 @@
 %global pypi_name lxml
 
 Name:           python-%{pypi_name}
-Version:        3.7.0
+Version:        3.7.1
 Release:        1%{?dist}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 
 License:        BSD
 URL:            http://lxml.de
-Source0:        https://files.pythonhosted.org/packages/source/l/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        http://lxml.de/files/%{pypi_name}-%{version}.tgz
 
 %description
 lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries. It
@@ -78,6 +78,9 @@ home page < or see our bug tracker at case you want to use the current ...
 %{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Sun Dec 25 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.1-1
+- Update to 3.7.1
+
 * Sun Dec 11 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.0-1
 - Update to 3.7.0
 
