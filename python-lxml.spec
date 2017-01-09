@@ -78,7 +78,7 @@ home page < or see our bug tracker at case you want to use the current ...
 %{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Mon Jan 09 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.2-1
+* Mon Jan 09 2017 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.2-1
 - Update to 3.7.2
 
 * Sun Dec 25 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 3.7.1-1
