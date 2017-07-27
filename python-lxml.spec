@@ -2,7 +2,7 @@
 
 Name:           python-%{pypi_name}
 Version:        3.7.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 
 License:        BSD
@@ -78,6 +78,9 @@ home page < or see our bug tracker at case you want to use the current ...
 %{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.7.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
