@@ -1,8 +1,8 @@
 %global pypi_name lxml
 
 Name:           python-%{pypi_name}
-Version:        3.7.2
-Release:        4%{?dist}
+Version:        3.8.0
+Release:        1%{?dist}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 
 License:        BSD
@@ -20,6 +20,7 @@ home page < or see our bug tracker at case you want to use the current ...
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 BuildRequires:  python-setuptools
 BuildRequires:  python2-devel
+BuildRequires:  python2-wheel
 BuildRequires:  libxml2-devel
 BuildRequires:  libxslt-devel
 Requires:       python-cssselect
@@ -34,16 +35,17 @@ extends the ElementTree API significantly to offer support for XPath, RelaxNG,
 XML Schema, XSLT, C14N and much more.To contact the project, go to the project
 home page < or see our bug tracker at case you want to use the current ...
 
-%package -n     python3-%{pypi_name}
+%package -n     python36u-%{pypi_name}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-devel
-Requires:       python3-cssselect
-Requires:       python3-html5lib
-Requires:       python3-beautifulsoup4
-%{?python_provide:%python_provide python3-%{pypi_name}}
+BuildRequires:  python36u-setuptools
+BuildRequires:  python36u-devel
+BuildRequires:  python36u-wheel
+Requires:       python36u-cssselect
+Requires:       python36u-html5lib
+Requires:       python36u-beautifulsoup4
+%{?python_provide:%python_provide python36u-%{pypi_name}}
 
-%description -n python3-%{pypi_name}
+%description -n python36u-%{pypi_name}
 lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries. It
 provides safe and convenient access to these libraries using the ElementTree It
 extends the ElementTree API significantly to offer support for XPath, RelaxNG,
@@ -54,30 +56,32 @@ home page < or see our bug tracker at case you want to use the current ...
 %autosetup -n %{pypi_name}-%{version}
 
 %build
-%py2_build
-%py3_build
+%py2_build_wheel
+%py36_build_wheel
 
 %install
-%py2_install
-%py3_install
+%py2_install_arch_wheel %{pypi_name}
+%py36_install_arch_wheel %{pypi_name}
 
 %check
 %{__python2} setup.py test
-%{__python3} setup.py test
+%{__python36} setup.py test
 
 %files -n python2-%{pypi_name}
 %license doc/licenses/ZopePublicLicense.txt LICENSES.txt
 %doc README.rst src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt
-%{python2_sitearch}/%{pypi_name}
-%{python2_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python2_sitearch}/%{pypi_name}*
 
-%files -n python3-%{pypi_name}
+%files -n python36u-%{pypi_name}
 %license doc/licenses/ZopePublicLicense.txt LICENSES.txt
 %doc README.rst src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt
-%{python3_sitearch}/%{pypi_name}
-%{python3_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python36_sitearch}/%{pypi_name}*
 
 %changelog
+* Fri Aug 11 2017 Frankie Dintino <fdintino@gmail.com> - 3.8.0-1
+- Update to 3.8.0
+- Added IUS 3.6 package
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.7.2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
